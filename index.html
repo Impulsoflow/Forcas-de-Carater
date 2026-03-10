@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <!-- DADOS PESSOAIS - ALINHADOS EM GRID NO HTML -->
+            <!-- DADOS PESSOAIS - ALINHADOS NO HTML -->
             <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-8 text-sm text-gray-700 leading-relaxed shadow-inner">
                 <h4 class="font-bold text-blue-800 mb-3 uppercase tracking-wider text-xs border-b pb-2">Dados do Cliente</h4>
                 <div id="personal-data"></div>
@@ -425,7 +425,7 @@
         const education = document.getElementById('education').value.trim();
         const profession = document.getElementById('profession').value.trim();
         
-        // INSERÇÃO DE TODOS OS DADOS ALINHADOS NO HTML
+        // DADOS DO CLIENTE ALINHADOS NO HTML
         document.getElementById('personal-data').innerHTML = `
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
                 <div><span class="font-bold text-gray-800">Nome:</span> ${sanitize(name)}</div>
@@ -502,12 +502,17 @@
 
         let yPdf = 20;
 
-        const addHeader = () => {
-            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(100, 100, 100);
-            doc.text("Instituto Impulso Coaching", 20, 15);
-            doc.text("VIA Character Strengths Profile", 105, 15, { align: "center" });
-            doc.text(dateStr, 190, 15, { align: "right" });
-            doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.5); doc.line(20, 18, 190, 18);
+        // FAIXA DINÂMICA NO TOPO
+        const addHeader = (bgColor) => {
+            doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
+            doc.rect(0, 0, 210, 22, "F"); 
+            
+            doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.setTextColor(255, 255, 255);
+            doc.text("Instituto Impulso Coaching", 20, 14);
+            
+            doc.setFontSize(10); doc.setFont("helvetica", "normal");
+            doc.text("VIA Character Strengths", 105, 14, { align: "center" });
+            doc.text(dateStr, 190, 14, { align: "right" });
         };
 
         const addFooter = () => {
@@ -515,22 +520,21 @@
             doc.text("©2024 VIA Institute on Character. All Rights Reserved. | Instituto Impulso Coaching", 20, 290);
         };
 
-        function checkPageBreak(currentY, neededSpace = 30) {
+        function checkPageBreak(currentY, neededSpace, color) {
             if (currentY + neededSpace > 280) {
                 addFooter();
                 doc.addPage();
-                addHeader();
-                return 30; 
+                addHeader(color);
+                return 35; // Recomeça abaixo da faixa colorida
             }
             return currentY;
         }
 
-        addHeader();
-        yPdf = 25;
+        // PÁGINA 1: FAIXA AZUL INSTITUCIONAL
+        addHeader([30, 64, 175]);
+        yPdf = 35;
 
-        // ==========================================
-        // NOVO BOX DE DADOS DO CLIENTE NO PDF
-        // ==========================================
+        // BOX DE DADOS DO CLIENTE ALINHADO E LUXUOSO NO PDF
         doc.setFillColor(249, 250, 251); 
         doc.setDrawColor(229, 231, 235); 
         doc.setLineWidth(0.5);
@@ -539,28 +543,22 @@
         doc.setFontSize(9); 
         doc.setTextColor(50, 50, 50);
         
-        // Linha 1
         doc.setFont("helvetica", "bold"); doc.text(`Nome:`, 25, yPdf + 8);
         doc.setFont("helvetica", "normal"); doc.text(`${sanitize(name)}`, 37, yPdf + 8);
-
         doc.setFont("helvetica", "bold"); doc.text(`WhatsApp:`, 110, yPdf + 8);
         doc.setFont("helvetica", "normal"); doc.text(`${sanitize(whatsapp)}`, 130, yPdf + 8);
 
-        // Linha 2
         doc.setFont("helvetica", "bold"); doc.text(`E-mail:`, 25, yPdf + 15);
         doc.setFont("helvetica", "normal"); doc.text(`${sanitize(email)}`, 38, yPdf + 15);
-
         doc.setFont("helvetica", "bold"); doc.text(`Idade:`, 110, yPdf + 15);
         doc.setFont("helvetica", "normal"); doc.text(`${sanitize(age)} anos`, 122, yPdf + 15);
 
-        // Linha 3
         doc.setFont("helvetica", "bold"); doc.text(`Escolaridade:`, 25, yPdf + 22);
         doc.setFont("helvetica", "normal"); doc.text(`${sanitize(education || 'Não informada')}`, 48, yPdf + 22);
-
         doc.setFont("helvetica", "bold"); doc.text(`Profissão:`, 110, yPdf + 22);
         doc.setFont("helvetica", "normal"); doc.text(`${sanitize(profession || 'Não informada')}`, 128, yPdf + 22);
         
-        yPdf += 36; // Pula para a próxima seção
+        yPdf += 36; 
 
         // TEXTOS INTRODUTÓRIOS NO PDF
         doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(30, 64, 175);
@@ -616,24 +614,53 @@
             yPdf += rowH;
         });
 
-        yPdf += 10;
-        
-        // Finaliza Página 1 e inicia o Ranking na Página 2
+        // FINALIZA PÁGINA 1 E INICIA O RANKING
         addFooter();
         doc.addPage();
-        addHeader();
-        yPdf = 30;
+        
+        let currentColor = [13, 148, 136]; // Começa com VERDE (Teal) para o Top 5
+        addHeader(currentColor);
+        yPdf = 35;
 
-        // RANKING DE FORÇAS
+        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(currentColor[0], currentColor[1], currentColor[2]);
+        doc.text("Suas 5 Forças de Assinatura (Principais)", 20, yPdf);
+        yPdf += 12;
+
+        let lastCategory = 1;
+
+        // RANKING DINÂMICO
         sortedScores.forEach((s, index) => {
             const rank = index + 1;
-            yPdf = checkPageBreak(yPdf, 30);
             
-            doc.setFontSize(14); doc.setFont("helvetica", "bold");
-            if (rank <= 5) doc.setTextColor(20, 184, 166); 
-            else if (rank <= 19) doc.setTextColor(249, 115, 22); 
-            else doc.setTextColor(239, 68, 68); 
+            let category = 1;
+            let titleColor = [13, 148, 136]; // Verde Teal
+            let sectionTitle = "";
             
+            if (rank > 5 && rank <= 19) {
+                category = 2;
+                titleColor = [234, 88, 12]; // Laranja
+                sectionTitle = "Forças de Suporte (Posição 6 a 19)";
+            } else if (rank > 19) {
+                category = 3;
+                titleColor = [220, 38, 38]; // Vermelho
+                sectionTitle = "Forças Menos Utilizadas (Posição 20 a 24)";
+            }
+
+            // Verifica se mudou de categoria (de Top 5 para Suporte, etc)
+            if (category !== lastCategory) {
+                currentColor = titleColor; // Atualiza a cor da faixa para a nova página
+                yPdf = checkPageBreak(yPdf, 35, currentColor);
+                yPdf += 6;
+                doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(titleColor[0], titleColor[1], titleColor[2]);
+                doc.text(sectionTitle, 20, yPdf);
+                yPdf += 12;
+                lastCategory = category;
+            }
+
+            yPdf = checkPageBreak(yPdf, 25, currentColor);
+            
+            doc.setFontSize(13); doc.setFont("helvetica", "bold");
+            doc.setTextColor(titleColor[0], titleColor[1], titleColor[2]);
             doc.text(`${rank}. ${s.name}`, 20, yPdf);
             yPdf += 6;
             
