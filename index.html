@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <!-- DADOS PESSOAIS - ALINHADOS NO HTML -->
+            <!-- DADOS PESSOAIS - HTML -->
             <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-8 text-sm text-gray-700 leading-relaxed shadow-inner">
                 <h4 class="font-bold text-blue-800 mb-3 uppercase tracking-wider text-xs border-b pb-2">Dados do Cliente</h4>
                 <div id="personal-data"></div>
@@ -425,7 +425,7 @@
         const education = document.getElementById('education').value.trim();
         const profession = document.getElementById('profession').value.trim();
         
-        // DADOS DO CLIENTE ALINHADOS NO HTML
+        // DADOS DO CLIENTE HTML
         document.getElementById('personal-data').innerHTML = `
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
                 <div><span class="font-bold text-gray-800">Nome:</span> ${sanitize(name)}</div>
@@ -530,11 +530,13 @@
             return currentY;
         }
 
-        // PÁGINA 1: FAIXA AZUL INSTITUCIONAL
+        // ==========================================
+        // PÁGINA 1: DADOS E MATRIZ (FAIXA AZUL)
+        // ==========================================
         addHeader([30, 64, 175]);
         yPdf = 35;
 
-        // BOX DE DADOS DO CLIENTE ALINHADO E LUXUOSO NO PDF
+        // BOX DE DADOS DO CLIENTE
         doc.setFillColor(249, 250, 251); 
         doc.setDrawColor(229, 231, 235); 
         doc.setLineWidth(0.5);
@@ -560,7 +562,7 @@
         
         yPdf += 36; 
 
-        // TEXTOS INTRODUTÓRIOS NO PDF
+        // TEXTOS INTRODUTÓRIOS
         doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(30, 64, 175);
         doc.text("Virtudes e Forças de Caráter", 20, yPdf); yPdf += 8;
         
@@ -575,7 +577,7 @@
         const intro2 = "As suas 5 principais características (seu Top 5) são o seu para-choque natural. Se você estiver em um local onde as suas principais forças não puderem ser trabalhadas — ou seja, se não estiverem em atividade em pelo menos 75% do seu tempo — você terá um problema.\n\nQuando você consegue viver em função das suas cinco maiores características, a depressão dificilmente fará parte da sua vida. É preciso que elas estejam sempre em uso, pois então o seu trabalho será constante em FLOW (Fluxo). Isso é o verdadeiro engajamento!";
         doc.text(doc.splitTextToSize(intro2, 170), 20, yPdf); yPdf += 30;
 
-        // MATRIZ VETORIAL (PDF)
+        // MATRIZ VETORIAL
         const tableVirtues = [
             { name: "SABEDORIA", color: [37, 99, 235], bgLight: [239, 246, 255], items: ["Criatividade", "Curiosidade", "Julgamento", "Amor pelo Aprendizado", "Perspectiva"] },
             { name: "CORAGEM", color: [220, 38, 38], bgLight: [254, 242, 242], items: ["Coragem", "Perseverança", "Integridade", "Entusiasmo"] },
@@ -614,11 +616,13 @@
             yPdf += rowH;
         });
 
-        // FINALIZA PÁGINA 1 E INICIA O RANKING
+        // ==========================================
+        // PÁGINA 2: COMEÇA AS 5 FORÇAS PRINCIPAIS (VERDE)
+        // ==========================================
         addFooter();
         doc.addPage();
         
-        let currentColor = [13, 148, 136]; // Começa com VERDE (Teal) para o Top 5
+        let currentColor = [13, 148, 136]; // Teal / Verde
         addHeader(currentColor);
         yPdf = 35;
 
@@ -646,17 +650,29 @@
                 sectionTitle = "Forças Menos Utilizadas (Posição 20 a 24)";
             }
 
-            // Verifica se mudou de categoria (de Top 5 para Suporte, etc)
+            // ==========================================
+            // LÓGICA DE QUEBRA DE PÁGINA OBRIGATÓRIA PARA NOVA CATEGORIA
+            // ==========================================
             if (category !== lastCategory) {
-                currentColor = titleColor; // Atualiza a cor da faixa para a nova página
-                yPdf = checkPageBreak(yPdf, 35, currentColor);
-                yPdf += 6;
+                currentColor = titleColor; // Muda a cor da faixa
+                
+                // Força o encerramento da folha atual e abre uma nova em branco
+                addFooter();
+                doc.addPage();
+                
+                // Insere o novo cabeçalho colorido da nova categoria
+                addHeader(currentColor);
+                yPdf = 35;
+                
+                // Insere o título da nova categoria no topo da folha
                 doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(titleColor[0], titleColor[1], titleColor[2]);
                 doc.text(sectionTitle, 20, yPdf);
                 yPdf += 12;
+                
                 lastCategory = category;
             }
 
+            // Quebra de página automática caso a lista da categoria seja longa
             yPdf = checkPageBreak(yPdf, 25, currentColor);
             
             doc.setFontSize(13); doc.setFont("helvetica", "bold");
