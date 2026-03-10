@@ -11,30 +11,33 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     
+    /* BOTÕES E ESCALAS AGORA EM TONS DE AZUL */
     .scale-option {
         border: 2px solid #e2e8f0; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; background: white;
     }
     .scale-option:hover {
-        border-color: #14b8a6; background: #f0fdfa; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.1);
+        border-color: #2563eb; background: #eff6ff; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
     }
     .scale-option.selected {
-        border-color: #0d9488; background: #ccfbf1; box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2); transform: scale(1.03);
+        border-color: #1d4ed8; background: #dbeafe; box-shadow: 0 4px 10px rgba(29, 78, 216, 0.2); transform: scale(1.03);
     }
     
+    /* BARRA DE PROGRESSO AGORA AZUL */
     .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; width: 100%; }
-    .progress-bar-fill { height: 100%; background: linear-gradient(to right, #0ea5e9, #14b8a6); transition: width 0.3s ease; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(to right, #3b82f6, #1d4ed8); transition: width 0.3s ease; }
     .hidden { display: none !important; }
   </style>
 </head>
-<body class="bg-slate-50 text-gray-800 font-sans min-h-screen">
+<!-- FUNDO DA TELA AZUL ESCURO PADRÃO: bg-blue-900 -->
+<body class="bg-blue-900 text-gray-800 font-sans min-h-screen">
   
   <div class="max-w-4xl mx-auto px-4 py-8">
     
     <!-- ETAPA 1: INTRO E DADOS -->
-    <div id="intro" class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
-        <div class="bg-gradient-to-r from-cyan-600 to-blue-700 p-8 text-center">
+    <div id="intro" class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 border border-gray-100">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-center">
             <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">Pesquisa Forças de Caráter</h1>
-            <p class="text-cyan-100 text-lg font-medium">Instituto Impulso Coaching</p>
+            <p class="text-blue-100 text-lg font-medium">Instituto Impulso Coaching</p>
         </div>
         
         <div class="p-8">
@@ -50,23 +53,23 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Nome Completo *</label>
-                    <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ex: João da Silva">
+                    <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="Ex: João da Silva">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">WhatsApp *</label>
-                    <input type="text" id="whatsapp" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="(00) 00000-0000" oninput="maskWhatsApp(this)">
+                    <input type="text" id="whatsapp" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="(00) 00000-0000" oninput="maskWhatsApp(this)">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">E-mail *</label>
-                    <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="seu@email.com">
+                    <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="seu@email.com">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Idade *</label>
-                    <input type="number" id="age" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ex: 35">
+                    <input type="number" id="age" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="Ex: 35">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Escolaridade</label>
-                    <select id="education" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
+                    <select id="education" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition bg-white">
                         <option value="">Selecione...</option>
                         <option value="Ensino Médio">Ensino Médio</option>
                         <option value="Superior Incompleto">Superior Incompleto</option>
@@ -77,11 +80,11 @@
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Profissão</label>
-                    <input type="text" id="profession" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ex: Empresário">
+                    <input type="text" id="profession" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="Ex: Empresário">
                 </div>
             </div>
 
-            <button onclick="startTest()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg transition duration-200 text-lg uppercase tracking-wide">
+            <button onclick="startTest()" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-bold py-4 rounded-xl shadow-lg transition duration-200 text-lg uppercase tracking-wide">
                 Iniciar Pesquisa Agora
             </button>
             
@@ -96,13 +99,12 @@
 
     <!-- ETAPA 3: RESULTADO -->
     <div id="result" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
-        <div class="bg-gradient-to-r from-cyan-600 to-blue-700 p-8 text-center text-white">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-center text-white">
             <h2 class="text-3xl font-extrabold mb-2">Forças de Caráter</h2>
-            <p class="text-cyan-100 text-lg">Instituto Impulso Coaching</p>
+            <p class="text-blue-100 text-lg">Instituto Impulso Coaching</p>
         </div>
         
         <div class="p-8">
-            <!-- STATUS DE PROCESSAMENTO -->
             <div id="status-container" class="mb-8">
                 <div id="auto-send-status" class="bg-yellow-50 text-yellow-800 border border-yellow-200 p-4 rounded-lg text-center font-bold text-lg animate-pulse">
                     ⏳ Analisando suas respostas e gerando laudo profissional em PDF...
@@ -351,7 +353,7 @@
             <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 mb-8">
                 <div class="flex justify-between items-center mb-6">
                     <p class="text-sm font-bold text-gray-500 tracking-wider uppercase">Passo ${qNum} de ${TOTAL_Q}</p>
-                    <span class="text-xs font-bold text-teal-700 bg-teal-100 px-3 py-1.5 rounded-full">${progress}% concluído</span>
+                    <span class="text-xs font-bold text-blue-700 bg-blue-100 px-3 py-1.5 rounded-full">${progress}% concluído</span>
                 </div>
                 
                 <p class="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-800 leading-tight">"${questions[index]}"</p>
@@ -368,7 +370,7 @@
                 </div>
                 
                 <div class="flex justify-between mt-6">
-                    ${index > 0 ? `<button onclick="loadQuestion(${index - 1})" class="text-gray-500 hover:text-gray-800 font-bold text-sm transition px-4 py-2 hover:bg-gray-100 rounded-lg">← Voltar anterior</button>` : '<div></div>'}
+                    ${index > 0 ? `<button onclick="loadQuestion(${index - 1})" class="text-gray-500 hover:text-blue-800 font-bold text-sm transition px-4 py-2 hover:bg-gray-100 rounded-lg">← Voltar anterior</button>` : '<div></div>'}
                 </div>
                 
                 <div class="progress-bar mt-6"><div class="progress-bar-fill" style="width: ${progress}%"></div></div>
@@ -430,6 +432,9 @@
 
         const name = document.getElementById('name').value.trim();
         const whatsapp = document.getElementById('whatsapp').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const education = document.getElementById('education').value.trim();
         const profession = document.getElementById('profession').value.trim();
         
         document.getElementById('personal-data').innerHTML = `
@@ -449,11 +454,21 @@
             const { doc, pdfFileName } = await generatePdfDocAndFileName(sorted);
             const base64Pdf = doc.output("datauristring").split(",")[1];
             
+            // CARGA DE DADOS ENVIADA PARA O GOOGLE SCRIPT
             const payload = {
-                apiKey: API_KEY, testId: "via_forcas", nome: name, whatsapp: whatsapp, email: document.getElementById('email').value.trim(), 
+                apiKey: API_KEY, 
+                testId: "via_forcas", 
+                nome: name, 
+                whatsapp: whatsapp, 
+                email: email,
+                idade: age,
+                escolaridade: education,
+                profissao: profession,
                 top1: sorted[0].name, top2: sorted[1].name, top3: sorted[2].name, top4: sorted[3].name, top5: sorted[4].name,
                 bot1: sorted[19].name, bot2: sorted[20].name, bot3: sorted[21].name, bot4: sorted[22].name, bot5: sorted[23].name,
-                pdfBase64: base64Pdf, pdfFileName: pdfFileName, sendEmail: true
+                pdfBase64: base64Pdf, 
+                pdfFileName: pdfFileName, 
+                sendEmail: true
             };
 
             await fetch(WEB_APP_URL, {
@@ -529,9 +544,7 @@
         const intro2 = "As suas 5 principais características (seu Top 5) são o seu para-choque natural. Se você estiver em um local onde as suas principais forças não puderem ser trabalhadas — ou seja, se não estiverem em atividade em pelo menos 75% do seu tempo — você terá um problema.\n\nQuando você consegue viver em função das suas cinco maiores características, a depressão dificilmente fará parte da sua vida. É preciso que elas estejam sempre em uso, pois então o seu trabalho será constante em FLOW (Fluxo). Isso é o verdadeiro engajamento!";
         doc.text(doc.splitTextToSize(intro2, 170), 20, yPdf); yPdf += 30;
 
-        // ==========================================
-        // NOVA TABELA MATRIZ VETORIAL (PDF)
-        // ==========================================
+        // MATRIZ VETORIAL (PDF)
         const tableVirtues = [
             { name: "SABEDORIA", color: [37, 99, 235], bgLight: [239, 246, 255], items: ["Criatividade", "Curiosidade", "Julgamento", "Amor pelo Aprendizado", "Perspectiva"] },
             { name: "CORAGEM", color: [220, 38, 38], bgLight: [254, 242, 242], items: ["Coragem", "Perseverança", "Integridade", "Entusiasmo"] },
@@ -547,20 +560,16 @@
         let col2W = 125;
 
         tableVirtues.forEach((v) => {
-            // Fundo coluna esquerda (Virtude)
             doc.setFillColor(v.color[0], v.color[1], v.color[2]);
             doc.rect(tableX, yPdf, col1W, rowH, "F");
             
-            // Fundo coluna direita (Forças)
             doc.setFillColor(v.bgLight[0], v.bgLight[1], v.bgLight[2]);
             doc.rect(tableX + col1W, yPdf, col2W, rowH, "F");
             
-            // Texto da Virtude (Esquerda)
             doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(255, 255, 255);
             let textW = doc.getTextWidth(v.name);
             doc.text(v.name, tableX + (col1W / 2) - (textW / 2), yPdf + 10.5);
             
-            // Texto das Forças (Direita)
             doc.setFont("helvetica", "bold"); doc.setFontSize(8.5); doc.setTextColor(v.color[0], v.color[1], v.color[2]);
             let itemsStr = v.items.join("   •   ");
             
@@ -568,7 +577,6 @@
             let textY = yPdf + (rowH / 2) - ((lines.length - 1) * 2) + 3; 
             doc.text(lines, tableX + col1W + 5, textY);
             
-            // Borda divisória (Linha branca)
             doc.setDrawColor(255, 255, 255); doc.setLineWidth(1);
             doc.line(tableX, yPdf + rowH, tableX + col1W + col2W, yPdf + rowH);
             
@@ -589,9 +597,9 @@
             yPdf = checkPageBreak(yPdf, 30);
             
             doc.setFontSize(14); doc.setFont("helvetica", "bold");
-            if (rank <= 5) doc.setTextColor(20, 184, 166); // Teal
-            else if (rank <= 19) doc.setTextColor(249, 115, 22); // Orange
-            else doc.setTextColor(239, 68, 68); // Red
+            if (rank <= 5) doc.setTextColor(20, 184, 166); 
+            else if (rank <= 19) doc.setTextColor(249, 115, 22); 
+            else doc.setTextColor(239, 68, 68); 
             
             doc.text(`${rank}. ${s.name}`, 20, yPdf);
             yPdf += 6;
