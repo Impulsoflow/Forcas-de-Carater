@@ -1,702 +1,1695 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forças de Caráter - Rogério Braga</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forças de Caráter - Instituto Impulso Coaching de Liderança</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    
-    .scale-option {
-        border: 2px solid #e2e8f0; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; background: white;
+    :root {
+      --bg1: #0b4aa2;
+      --bg2: #062b62;
+      --surface: #f4f9ff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #0b63ce;
+      --primary2: #084aa0;
+      --accent: #38bdf8;
+      --border: #cfe6ff;
+      --shadow: 0 14px 34px rgba(2,32,71,.18);
+      --shadow2: 0 8px 20px rgba(2,32,71,.12);
+      --radius: 18px;
+      --radius2: 14px;
     }
-    .scale-option:hover {
-        border-color: #2563eb; background: #eff6ff; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(56,189,248,.35), transparent 55%),
+        radial-gradient(900px 600px at 85% 15%, rgba(255,215,0,.10), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      line-height: 1.6;
+      padding: 18px;
     }
-    .scale-option.selected {
-        border-color: #1d4ed8; background: #dbeafe; box-shadow: 0 4px 10px rgba(29, 78, 216, 0.2); transform: scale(1.03);
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, rgba(244,249,255,.97), rgba(244,249,255,.94));
+      border: 1px solid rgba(56,189,248,.35);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
     }
-    
-    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; width: 100%; }
-    .progress-bar-fill { height: 100%; background: linear-gradient(to right, #3b82f6, #1d4ed8); transition: width 0.3s ease; }
-    .hidden { display: none !important; }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+    }
+
+    .wrap { padding: 26px; }
+
+    .header {
+      text-align: center;
+      padding: 10px 0 20px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(11,99,206,.08);
+    }
+
+    .main-title {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      font-weight: normal;
+      color: #64748b;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .tagline {
+      margin: 6px 0 18px;
+      font-weight: 700;
+      color: #0b2a52;
+      font-size: 13px;
+      letter-spacing: .02em;
+      font-family: Arial, sans-serif;
+    }
+
+    .sub-title {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 34px;
+      line-height: 1.15;
+      color: #063b7a;
+      font-weight: normal;
+      letter-spacing: -0.01em;
+    }
+
+    .header-desc {
+      margin: 12px auto 0;
+      max-width: 80ch;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(207,230,255,.95);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow2);
+      padding: 18px;
+    }
+
+    .instructions {
+      background: linear-gradient(180deg, rgba(56,189,248,.14), rgba(56,189,248,.08));
+      border: 1px solid rgba(56,189,248,.25);
+      border-left: 6px solid var(--accent);
+      border-radius: var(--radius2);
+      padding: 16px;
+      margin: 14px 0 18px;
+      color: var(--text);
+    }
+
+    .instructions p,
+    .instructions li {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--text);
+      text-align: justify;
+    }
+
+    .instructions p:last-child,
+    .instructions li:last-child {
+      margin-bottom: 0;
+    }
+
+    .grid-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+    }
+
+    @media (max-width: 650px) {
+      .grid-form { grid-template-columns: 1fr; }
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 800;
+      color: #063b7a;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 14px;
+      border: 1.5px solid rgba(11,99,206,.28);
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s ease, border-color .2s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: rgba(11,99,206,.55);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.22);
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 12px;
+    }
+
+    .counter {
+      font-weight: 800;
+      color: #0b2a52;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .progress-meta {
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: #e6eefc;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 12px;
+      border: 1px solid rgba(11,99,206,.12);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transition: width .35s ease-in-out;
+    }
+
+    .question-title {
+      margin: 0 0 10px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: center;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.4;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .opt {
+      border: 1.5px solid rgba(11,99,206,.22);
+      background: rgba(11,99,206,.06);
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 600;
+      color: #0b2a52;
+      font-size: 13px;
+      flex: 0 1 calc(20% - 10px);
+      max-width: 180px;
+      min-width: 130px;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 820px) {
+      .opt { flex: 0 1 calc(50% - 10px); min-width: 140px; }
+    }
+
+    @media (max-width: 380px) {
+      .opt { flex: 0 1 100%; max-width: 340px; min-width: 0; }
+    }
+
+    .opt:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 18px rgba(2,32,71,.10);
+      border-color: rgba(56,189,248,.55);
+    }
+
+    .opt.selected,
+    .opt[aria-checked="true"] {
+      background: linear-gradient(45deg, var(--primary), var(--primary2));
+      border-color: rgba(11,99,206,.55);
+      color: #fff;
+      box-shadow: 0 14px 22px rgba(11,99,206,.22);
+      font-weight: 700;
+      font-family: Arial, sans-serif;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, var(--primary), var(--primary2));
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(11,99,206,.22);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: saturate(1.05);
+      box-shadow: 0 14px 26px rgba(11,99,206,.30);
+    }
+
+    .btn-ghost {
+      background: #fff;
+      color: #0b2a52;
+      border: 1.5px solid rgba(11,99,206,.22);
+      box-shadow: 0 8px 16px rgba(2,32,71,.08);
+      text-decoration: none;
+    }
+
+    .btn-ghost:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56,189,248,.55);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .result-hero {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .result-hero h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
+      color: #063b7a;
+      font-family: Arial, sans-serif;
+    }
+
+    .status {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #0b63ce;
+      min-height: 22px;
+      margin-top: 8px;
+    }
+
+    .success-box {
+      margin-top: 14px;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.4);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 16px;
+      margin-top: 14px;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .left-column,
+    .right-column {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .summary-shell,
+    .map-card,
+    .chart-card,
+    .profile-box,
+    .insight-box {
+      background: #fff;
+      border: 1px solid #d5e6fb;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow2);
+      overflow: hidden;
+    }
+
+    .summary-shell h3,
+    .map-card h3,
+    .chart-card h3 {
+      margin: 0 0 14px;
+      color: #12284b;
+      font-size: 20px;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .summary-card {
+      background: #fff;
+      border: 1.5px solid #d8e7fb;
+      border-radius: 24px;
+      padding: 16px 18px;
+      min-height: 120px;
+      box-shadow: 0 4px 12px rgba(2,32,71,.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .summary-label {
+      font-size: 13px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .summary-big {
+      font-size: 34px;
+      line-height: 1;
+      color: #10284a;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .summary-big-word {
+      font-size: 18px;
+      line-height: 1.1;
+      color: #10284a;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .summary-sub {
+      font-size: 15px;
+      line-height: 1.3;
+      color: #475569;
+      font-weight: 800;
+      font-family: Arial, sans-serif;
+      word-break: break-word;
+    }
+
+    .scores-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .score-line {
+      padding: 12px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid rgba(207,230,255,.95);
+      box-shadow: 0 4px 10px rgba(2,32,71,.05);
+    }
+
+    .score-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #0b2a52;
+      margin-bottom: 8px;
+      font-family: Arial, sans-serif;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 12px;
+      background: #e6eefc;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(11,99,206,.12);
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width .45s ease-in-out;
+    }
+
+    .fill-top { background: linear-gradient(90deg, #14b8a6, #0f766e); }
+    .fill-mid { background: linear-gradient(90deg, #fb923c, #ea580c); }
+    .fill-low { background: linear-gradient(90deg, #f87171, #dc2626); }
+
+    .panel-subtitle {
+      margin: -4px 0 14px;
+      color: #64748b;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: Arial, sans-serif;
+      line-height: 1.45;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rank-item {
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid #dbeafe;
+      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(2,32,71,.05);
+    }
+
+    .rank-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .rank-item-name {
+      font-size: 15px;
+      font-weight: 900;
+      color: #12284b;
+      font-family: Arial, sans-serif;
+      line-height: 1.2;
+    }
+
+    .rank-item-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      white-space: nowrap;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .rank-score {
+      font-size: 20px;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      margin-bottom: 8px;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .rank-desc {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.65;
+      margin: 0;
+      text-align: justify;
+    }
+
+    .client-box {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(11,99,206,.14);
+      background: linear-gradient(180deg, rgba(244,249,255,1), rgba(232,241,255,1));
+      box-shadow: 0 4px 12px rgba(2,32,71,.05);
+    }
+
+    .client-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 20px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    @media (max-width: 720px) {
+      .client-grid { grid-template-columns: 1fr; }
+    }
+
+    .client-grid strong {
+      color: #063b7a;
+      font-family: Arial, sans-serif;
+    }
+
+    .virtue-table {
+      display: grid;
+      gap: 10px;
+    }
+
+    .virtue-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #dbeafe;
+      background: #fff;
+    }
+
+    @media (max-width: 720px) {
+      .virtue-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .virtue-name {
+      color: #fff;
+      font-weight: 900;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      letter-spacing: .05em;
+      text-align: center;
+    }
+
+    .virtue-items {
+      padding: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .virtue-pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 3px 8px rgba(2,32,71,.06);
+      border: 1px solid #dbeafe;
+      color: #0b2a52;
+    }
+
+    .v-sabedoria .virtue-name { background: #2563eb; }
+    .v-sabedoria .virtue-items { background: #eff6ff; }
+
+    .v-coragem .virtue-name { background: #dc2626; }
+    .v-coragem .virtue-items { background: #fef2f2; }
+
+    .v-humanidade .virtue-name { background: #10b981; }
+    .v-humanidade .virtue-items { background: #ecfdf5; }
+
+    .v-justica .virtue-name { background: #9333ea; }
+    .v-justica .virtue-items { background: #faf5ff; }
+
+    .v-temperanca .virtue-name { background: #0d9488; }
+    .v-temperanca .virtue-items { background: #f0fdfa; }
+
+    .v-transcendencia .virtue-name { background: #d97706; }
+    .v-transcendencia .virtue-items { background: #fffbeb; }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      font-family: Arial, sans-serif;
+    }
   </style>
 </head>
-<body class="bg-blue-900 text-gray-800 font-sans min-h-screen">
-  
-  <div class="max-w-4xl mx-auto px-4 py-8">
-    
-    <!-- ETAPA 1: INTRO E DADOS -->
-    <div id="intro" class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 border border-gray-100">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-center">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">Pesquisa Forças de Caráter</h1>
-            <p class="text-blue-100 text-lg font-medium">Instituto Impulso Coaching</p>
-        </div>
-        
-        <div class="p-4 sm:p-8">
-            <div class="mb-8 p-5 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
-                <h3 class="font-bold text-blue-800 text-lg mb-2">Instruções para a Pesquisa:</h3>
-                <ul class="list-disc pl-5 text-blue-900 space-y-2 text-sm">
-                    <li>Seja totalmente <strong>honesto e espontâneo</strong>.</li>
-                    <li>Escolha a opção que melhor descreve <strong>como você realmente age</strong> na vida real.</li>
-                    <li>Não há respostas certas ou erradas, apenas o seu perfil natural.</li>
-                </ul>
-            </div>
+<body>
+<div class="container">
+  <div class="wrap">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nome Completo *</label>
-                    <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="Ex: João da Silva">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">WhatsApp *</label>
-                    <input type="text" id="whatsapp" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="(00) 00000-0000" oninput="maskWhatsApp(this)">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">E-mail *</label>
-                    <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="seu@email.com">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Idade *</label>
-                    <input type="number" id="age" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="Ex: 35">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Escolaridade</label>
-                    <select id="education" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition bg-white">
-                        <option value="">Selecione...</option>
-                        <option value="Ensino Médio">Ensino Médio</option>
-                        <option value="Superior Incompleto">Superior Incompleto</option>
-                        <option value="Superior Completo">Superior Completo</option>
-                        <option value="Pós-graduação/MBA">Pós-graduação / MBA</option>
-                        <option value="Mestrado/Doutorado">Mestrado / Doutorado</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Profissão</label>
-                    <input type="text" id="profession" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 outline-none transition" placeholder="Ex: Empresário">
-                </div>
-            </div>
-
-            <button onclick="startTest()" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-bold py-4 rounded-xl shadow-lg transition duration-200 text-lg uppercase tracking-wide">
-                Iniciar Pesquisa Agora
-            </button>
-            
-            <p class="text-center italic text-blue-600 mt-6 font-medium">A mudança pode acontecer em um instante.</p>
-        </div>
+    <div class="header">
+      <p class="main-title">Instituto Impulso Coaching de Liderança</p>
+      <p class="tagline">A mudança pode acontecer em um instante</p>
+      <h1 class="sub-title">Forças de Caráter</h1>
+      <p class="header-desc">Mapeie as virtudes e forças que mais influenciam sua identidade, seu comportamento e sua forma de gerar impacto. Ao final, receba um relatório completo com seu Top 5 de assinatura e o ranking das 24 forças de caráter.</p>
     </div>
 
-    <!-- ETAPA 2: TESTE (OTIMIZADO PARA MOBILE) -->
-    <div id="test-section" class="hidden">
-        <div id="current-question"></div>
-    </div>
+    <section id="step-intro" class="step active">
+      <div class="instructions">
+        <p><strong>Descubra o que há de mais forte em você.</strong></p>
+        <p>As maiores transformações pessoais e profissionais não começam apenas corrigindo fraquezas — elas começam quando você identifica, compreende e ativa o que já existe de melhor dentro de si.</p>
+        <p>A pesquisa <strong>Forças de Caráter</strong> foi criada para revelar os traços que mais sustentam sua identidade, sua energia, sua forma de decidir, liderar, aprender, servir e se relacionar.</p>
+        <p>Ao final, você receberá um <strong>relatório profissional em PDF</strong> com seu ranking completo das 24 forças, seu Top 5 de assinatura e uma leitura clara sobre como usar melhor seus recursos naturais no dia a dia.</p>
+        <p>Responda com sinceridade. Não existe resposta certa ou errada. Existe apenas aquilo que mais se aproxima de quem você realmente é.</p>
+        <p style="margin-top:10px; color:#0b63ce;">
+          <strong style="font-family:Arial,sans-serif;">Escala de resposta:</strong> marque de 1 até 5, sendo 1 = Nada a ver comigo e 5 = Tudo a ver comigo.
+        </p>
+      </div>
 
-    <!-- ETAPA 3: RESULTADO -->
-    <div id="result" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-gray-100">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-center text-white">
-            <h2 class="text-3xl font-extrabold mb-2">Forças de Caráter</h2>
-            <p class="text-blue-100 text-lg">Instituto Impulso Coaching</p>
+      <div class="card" style="width:100%; max-width:760px; margin:0 auto; padding:32px 24px;">
+        <div class="grid-form">
+          <div class="form-group">
+            <label for="name">Nome Completo *</label>
+            <input type="text" id="name" placeholder="Ex: João Silva" />
+          </div>
+
+          <div class="form-group">
+            <label for="whatsapp">WhatsApp *</label>
+            <input type="text" id="whatsapp" placeholder="(00) 90000-0000" oninput="maskWhatsApp(this)" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" placeholder="email@exemplo.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="age">Idade *</label>
+            <input type="number" id="age" placeholder="Ex: 35" />
+          </div>
+
+          <div class="form-group">
+            <label for="education">Escolaridade</label>
+            <select id="education">
+              <option value="">Selecione...</option>
+              <option value="Ensino Médio">Ensino Médio</option>
+              <option value="Superior Incompleto">Superior Incompleto</option>
+              <option value="Superior Completo">Superior Completo</option>
+              <option value="Pós-graduação/MBA">Pós-graduação / MBA</option>
+              <option value="Mestrado/Doutorado">Mestrado / Doutorado</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="profession">Profissão</label>
+            <input type="text" id="profession" placeholder="Ex: Empresário" />
+          </div>
         </div>
-        
-        <div class="p-4 sm:p-8">
-            <div id="status-container" class="mb-8">
-                <div id="auto-send-status" class="bg-yellow-50 text-yellow-800 border border-yellow-200 p-4 rounded-lg text-center font-bold text-lg animate-pulse">
-                    ⏳ Analisando suas respostas e gerando laudo profissional em PDF...
-                </div>
-                <div id="final-success-message" class="hidden bg-green-50 text-green-800 border border-green-200 p-5 rounded-lg text-center">
-                    <h3 class="text-xl font-bold mb-2">✅ Relatório gerado e salvo com sucesso!</h3>
-                    <p>O seu laudo completo em PDF foi enviado para o seu e-mail e para a equipe do Instituto Impulso.<br>Verifique sua caixa de entrada (e pasta spam).</p>
-                </div>
-            </div>
 
-            <!-- DADOS PESSOAIS - HTML -->
-            <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-8 text-sm text-gray-700 leading-relaxed shadow-inner">
-                <h4 class="font-bold text-blue-800 mb-3 uppercase tracking-wider text-xs border-b pb-2">Dados do Cliente</h4>
-                <div id="personal-data"></div>
-            </div>
-
-            <div class="mb-10 text-gray-700">
-                <h3 class="text-2xl font-bold text-blue-800 mb-4 border-b pb-2">6 Virtudes e 24 Forças de Caráter</h3>
-                <p class="mb-4 leading-relaxed">
-                    Na medicina e na psiquiatria, existe um manual de classificação de doenças mentais chamado DSM (Dicionário de Saúde Mental). Os criadores do VIA pensaram: <em>"Por que não fazer um manual de classificação do que há de melhor no ser humano?"</em>
-                </p>
-                <p class="mb-4 leading-relaxed">
-                    Assim nasceu o <strong>VIA</strong>, mapeando 24 características focadas no seu potencial. Ele atua em oposição ao DSM.
-                </p>
-                
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-lg my-6">
-                    <h4 class="font-bold text-lg text-blue-800 mb-2">O Para-choque contra a Depressão</h4>
-                    <p class="mb-3 leading-relaxed">
-                        As suas cinco principais características (seu Top 5) são o seu para-choque natural. Se você estiver em um local onde as suas principais forças não puderem ser trabalhadas — ou seja, se não estiverem em atividade em pelo menos <strong>75% do seu tempo</strong> — você terá um problema.
-                    </p>
-                    <p class="leading-relaxed">
-                        Quando você consegue viver em função das suas cinco maiores características, a depressão dificilmente fará parte da sua vida. É preciso que elas estejam sempre em uso, pois então o seu trabalho será constante em <strong>FLOW</strong> (fluxo). Isso é o verdadeiro engajamento!
-                    </p>
-                </div>
-            </div>
-
-            <div class="mb-12">
-                <h3 class="text-xl font-bold text-center text-gray-800 mb-6">Mapa das 6 Virtudes e 24 Forças de Caráter </h3>
-                
-                <div class="overflow-hidden rounded-xl border border-gray-200 shadow-md">
-                    <table class="w-full text-left border-collapse">
-                        <tbody>
-                            <tr class="border-b-2 border-white bg-blue-50">
-                                <td class="w-1/3 sm:w-1/4 bg-blue-600 text-white font-extrabold p-4 align-middle text-center uppercase tracking-widest text-xs sm:text-sm">Sabedoria</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1 bg-white text-blue-700 font-bold text-xs rounded-lg border border-blue-200 shadow-sm">Criatividade</span>
-                                        <span class="px-3 py-1 bg-white text-blue-700 font-bold text-xs rounded-lg border border-blue-200 shadow-sm">Curiosidade</span>
-                                        <span class="px-3 py-1 bg-white text-blue-700 font-bold text-xs rounded-lg border border-blue-200 shadow-sm">Julgamento</span>
-                                        <span class="px-3 py-1 bg-white text-blue-700 font-bold text-xs rounded-lg border border-blue-200 shadow-sm">Amor pelo Aprendizado</span>
-                                        <span class="px-3 py-1 bg-white text-blue-700 font-bold text-xs rounded-lg border border-blue-200 shadow-sm">Perspectiva</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="border-b-2 border-white bg-red-50">
-                                <td class="w-1/3 sm:w-1/4 bg-red-600 text-white font-extrabold p-4 align-middle text-center uppercase tracking-widest text-xs sm:text-sm">Coragem</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1 bg-white text-red-700 font-bold text-xs rounded-lg border border-red-200 shadow-sm">Coragem</span>
-                                        <span class="px-3 py-1 bg-white text-red-700 font-bold text-xs rounded-lg border border-red-200 shadow-sm">Perseverança</span>
-                                        <span class="px-3 py-1 bg-white text-red-700 font-bold text-xs rounded-lg border border-red-200 shadow-sm">Integridade</span>
-                                        <span class="px-3 py-1 bg-white text-red-700 font-bold text-xs rounded-lg border border-red-200 shadow-sm">Entusiasmo</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="border-b-2 border-white bg-emerald-50">
-                                <td class="w-1/3 sm:w-1/4 bg-emerald-600 text-white font-extrabold p-4 align-middle text-center uppercase tracking-widest text-xs sm:text-sm">Humanidade</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1 bg-white text-emerald-700 font-bold text-xs rounded-lg border border-emerald-200 shadow-sm">Bondade</span>
-                                        <span class="px-3 py-1 bg-white text-emerald-700 font-bold text-xs rounded-lg border border-emerald-200 shadow-sm">Amor</span>
-                                        <span class="px-3 py-1 bg-white text-emerald-700 font-bold text-xs rounded-lg border border-emerald-200 shadow-sm">Inteligência Social</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="border-b-2 border-white bg-purple-50">
-                                <td class="w-1/3 sm:w-1/4 bg-purple-600 text-white font-extrabold p-4 align-middle text-center uppercase tracking-widest text-xs sm:text-sm">Justiça</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1 bg-white text-purple-700 font-bold text-xs rounded-lg border border-purple-200 shadow-sm">Trabalho em Equipe</span>
-                                        <span class="px-3 py-1 bg-white text-purple-700 font-bold text-xs rounded-lg border border-purple-200 shadow-sm">Equidade</span>
-                                        <span class="px-3 py-1 bg-white text-purple-700 font-bold text-xs rounded-lg border border-purple-200 shadow-sm">Liderança</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="border-b-2 border-white bg-teal-50">
-                                <td class="w-1/3 sm:w-1/4 bg-teal-600 text-white font-extrabold p-4 align-middle text-center uppercase tracking-widest text-xs sm:text-sm">Temperança</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1 bg-white text-teal-700 font-bold text-xs rounded-lg border border-teal-200 shadow-sm">Perdão</span>
-                                        <span class="px-3 py-1 bg-white text-teal-700 font-bold text-xs rounded-lg border border-teal-200 shadow-sm">Humildade</span>
-                                        <span class="px-3 py-1 bg-white text-teal-700 font-bold text-xs rounded-lg border border-teal-200 shadow-sm">Prudência</span>
-                                        <span class="px-3 py-1 bg-white text-teal-700 font-bold text-xs rounded-lg border border-teal-200 shadow-sm">Autocontrole</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="bg-amber-50">
-                                <td class="w-1/3 sm:w-1/4 bg-amber-600 text-white font-extrabold p-4 align-middle text-center uppercase tracking-widest text-xs sm:text-sm">Transcendência</td>
-                                <td class="p-4">
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="px-3 py-1 bg-white text-amber-700 font-bold text-xs rounded-lg border border-amber-200 shadow-sm">Apreciação da Beleza</span>
-                                        <span class="px-3 py-1 bg-white text-amber-700 font-bold text-xs rounded-lg border border-amber-200 shadow-sm">Gratidão</span>
-                                        <span class="px-3 py-1 bg-white text-amber-700 font-bold text-xs rounded-lg border border-amber-200 shadow-sm">Esperança</span>
-                                        <span class="px-3 py-1 bg-white text-amber-700 font-bold text-xs rounded-lg border border-amber-200 shadow-sm">Humor</span>
-                                        <span class="px-3 py-1 bg-white text-amber-700 font-bold text-xs rounded-lg border border-amber-200 shadow-sm">Espiritualidade</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- RESULTADOS -->
-            <h3 class="text-2xl font-bold text-teal-700 mb-6 border-b pb-2">Suas 5 Forças de Assinatura (Principais)</h3>
-            <div id="top5-results" class="space-y-6 mb-10"></div>
-            
-            <h3 class="text-2xl font-bold text-orange-600 mb-6 border-b pb-2">Forças de Suporte (Posição 6 a 19)</h3>
-            <div id="mid-rank-results" class="space-y-6 mb-10"></div>
-            
-            <h3 class="text-2xl font-bold text-red-600 mb-6 border-b pb-2">Forças Menos Utilizadas (Posição 20 a 24)</h3>
-            <div id="bot-rank-results" class="space-y-6 mb-10"></div>
-            
-            <div class="text-center mt-10 text-gray-600">
-                <p class="font-bold">Rogério Braga</p>
-                <p class="text-sm">Master Coach Executivo & Mentor de Liderança</p>
-                <p class="text-sm italic mt-2">A mudança pode acontecer em um instante.</p>
-            </div>
+        <div class="nav" style="justify-content:center; margin-top:32px;">
+          <button onclick="startTest()" class="btn btn-primary" type="button" style="width:100%; max-width:320px; justify-content:center; padding:14px; font-size:16px;">
+            Iniciar Pesquisa
+          </button>
         </div>
-    </div>
+      </div>
+    </section>
+
+    <section id="step-quiz" class="step">
+      <div class="topbar">
+        <div class="counter">Pergunta <span id="q-current">1</span> de 120</div>
+        <div class="progress-meta"><span id="answered-count">0</span>/120 respondidas</div>
+      </div>
+
+      <div class="progress-bar" aria-label="Progresso de respostas">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <div class="card" style="margin-top:12px; padding:30px;">
+        <p id="question-text" class="question-title"></p>
+        <div id="options" class="options"></div>
+        <div class="nav" style="margin-top:30px;">
+          <button id="btn-prev" class="btn btn-ghost" type="button" onclick="goPrev()">Anterior</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="step-results" class="step">
+      <div class="result-hero">
+        <h2 id="result-title">Seu Resultado</h2>
+        <p id="auto-send-status" class="status">⏳ Gerando relatório e processando sua análise...</p>
+
+        <div id="final-success-message" class="success-box">
+          <p style="margin:0; font-size:18px; font-family:Arial,sans-serif; font-weight:bold; color:#065f46;">
+            ✅ Relatório Gerado!
+          </p>
+          <p style="margin:6px 0 0; font-size:14px; color:#047857;">
+            Seu resultado completo em PDF foi enviado para seu e-mail.<br>
+            Equipe Instituto Impulso notificada.
+          </p>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="left-column">
+          <div class="summary-shell">
+            <h3>Resumo do Resultado</h3>
+            <div class="summary-cards">
+              <div class="summary-card">
+                <div class="summary-label">Força Principal</div>
+                <div class="summary-big-word" id="top1Name">-</div>
+                <div class="summary-sub" id="top1Score">-</div>
+              </div>
+
+              <div class="summary-card">
+                <div class="summary-label">5ª Força do Top 5</div>
+                <div class="summary-big-word" id="top5Name">-</div>
+                <div class="summary-sub" id="top5Score">-</div>
+              </div>
+
+              <div class="summary-card">
+                <div class="summary-label">Força Menos Utilizada</div>
+                <div class="summary-big-word" id="lastName">-</div>
+                <div class="summary-sub" id="lastScore">-</div>
+              </div>
+
+              <div class="summary-card">
+                <div class="summary-label">Virtude Mais Presente</div>
+                <div class="summary-big-word" id="topVirtue">-</div>
+                <div class="summary-sub" id="topVirtueCount">-</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="client-box">
+            <h3 style="margin:0 0 12px; color:#12284b; font-size:18px; font-weight:900; font-family:Arial,sans-serif;">Dados do Cliente</h3>
+            <div id="personal-data" class="client-grid"></div>
+          </div>
+
+          <div class="map-card">
+            <h3>Mapa das 6 Virtudes e 24 Forças</h3>
+            <div class="virtue-table">
+              <div class="virtue-row v-sabedoria">
+                <div class="virtue-name">Sabedoria</div>
+                <div class="virtue-items">
+                  <span class="virtue-pill">Criatividade</span>
+                  <span class="virtue-pill">Curiosidade</span>
+                  <span class="virtue-pill">Julgamento</span>
+                  <span class="virtue-pill">Amor pelo Aprendizado</span>
+                  <span class="virtue-pill">Perspectiva</span>
+                </div>
+              </div>
+
+              <div class="virtue-row v-coragem">
+                <div class="virtue-name">Coragem</div>
+                <div class="virtue-items">
+                  <span class="virtue-pill">Coragem</span>
+                  <span class="virtue-pill">Perseverança</span>
+                  <span class="virtue-pill">Integridade</span>
+                  <span class="virtue-pill">Entusiasmo</span>
+                </div>
+              </div>
+
+              <div class="virtue-row v-humanidade">
+                <div class="virtue-name">Humanidade</div>
+                <div class="virtue-items">
+                  <span class="virtue-pill">Bondade</span>
+                  <span class="virtue-pill">Amor</span>
+                  <span class="virtue-pill">Inteligência Social</span>
+                </div>
+              </div>
+
+              <div class="virtue-row v-justica">
+                <div class="virtue-name">Justiça</div>
+                <div class="virtue-items">
+                  <span class="virtue-pill">Trabalho em Equipe</span>
+                  <span class="virtue-pill">Equidade</span>
+                  <span class="virtue-pill">Liderança</span>
+                </div>
+              </div>
+
+              <div class="virtue-row v-temperanca">
+                <div class="virtue-name">Temperança</div>
+                <div class="virtue-items">
+                  <span class="virtue-pill">Perdão</span>
+                  <span class="virtue-pill">Humildade</span>
+                  <span class="virtue-pill">Prudência</span>
+                  <span class="virtue-pill">Autocontrole</span>
+                </div>
+              </div>
+
+              <div class="virtue-row v-transcendencia">
+                <div class="virtue-name">Transcendência</div>
+                <div class="virtue-items">
+                  <span class="virtue-pill">Apreciação da Beleza</span>
+                  <span class="virtue-pill">Gratidão</span>
+                  <span class="virtue-pill">Esperança</span>
+                  <span class="virtue-pill">Humor</span>
+                  <span class="virtue-pill">Espiritualidade</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#12284b; font-family:Arial,sans-serif;">Leitura Geral</h4>
+            <p id="general-reading" style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.7;">-</p>
+          </div>
+
+          <div class="insight-box">
+            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#12284b; font-family:Arial,sans-serif;">Ponto de Atenção</h4>
+            <p id="attention-reading" style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.7;">-</p>
+          </div>
+        </div>
+
+        <div class="right-column">
+          <div class="chart-card">
+            <h3>Suas 5 Forças de Assinatura</h3>
+            <p class="panel-subtitle">Essas são as forças mais presentes no seu perfil e que tendem a gerar mais energia, engajamento e naturalidade no seu funcionamento diário.</p>
+            <div id="top5-results" class="rank-list"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Forças de Suporte</h3>
+            <p class="panel-subtitle">Essas forças aparecem em nível intermediário e podem sustentar seu desempenho, suas relações e suas escolhas quando ativadas conscientemente.</p>
+            <div id="mid-rank-results" class="rank-list"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Forças Menos Utilizadas</h3>
+            <p class="panel-subtitle">Essas forças hoje aparecem com menor intensidade. Isso não significa fraqueza, mas sim áreas com menor ativação natural no momento.</p>
+            <div id="bot-rank-results" class="rank-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer">Instituto Impulso Coaching | Forças de Caráter</p>
+    </section>
+
   </div>
+</div>
 
-  <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRWidhPsLnAx-fordLb9ZmmtJcdjgJqnAobe0fBaqAgYes__qFe8_3vWTSFxmhRRUF/exec";
-                        
-    const API_KEY = "2026Impulso$";
-    
-    let autoSendInProgress = false;
-    let autoSendDone = false;
-    let emailSendAttempts = 0;
-    const MAX_EMAIL_ATTEMPTS = 3;
+<script>
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRWidhPsLnAx-fordLb9ZmmtJcdjgJqnAobe0fBaqAgYes__qFe8_3vWTSFxmhRRUF/exec";
+  const API_KEY = "2026Impulso$";
 
-    function sanitize(str) { return DOMPurify.sanitize(str); }
+  let autoSendInProgress = false;
+  let autoSendDone = false;
+  let emailSendAttempts = 0;
+  const MAX_EMAIL_ATTEMPTS = 3;
 
-    function maskWhatsApp(input) {
-        let v = input.value.replace(/\D/g, "");
-        if (v.length > 11) v = v.substring(0, 11);
-        if (v.length > 0) {
-            v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
-            v = v.replace(/(\d{5})(\d)/, "$1-$2");
-        }
-        input.value = v;
+  let current = 0;
+  const TOTAL_Q = 120;
+  let responses = new Array(TOTAL_Q).fill(null);
+
+  function sanitize(str) {
+    return window.DOMPurify ? DOMPurify.sanitize(String(str || "")) : String(str || "");
+  }
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || "").trim());
+  }
+
+  function maskWhatsApp(input) {
+    let v = input.value.replace(/\D/g, "");
+    if (v.length > 11) v = v.substring(0, 11);
+    if (v.length > 0) {
+      v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+      v = v.replace(/(\d{5})(\d)/, "$1-$2");
+    }
+    input.value = v;
+  }
+
+  function toTitleCase(str) {
+    if (!str) return "";
+    const lowers = ["da","de","do","das","dos","e"];
+    return String(str).toLowerCase().split(" ").map((w,i)=>
+      i > 0 && lowers.includes(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)
+    ).join(" ");
+  }
+
+  function showStep(stepId) {
+    document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+    document.getElementById(stepId).classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const strengthData = [
+    { name: "Criatividade", virtue: "Sabedoria", desc: "Você gera ideias novas e originais. Gosta de pensar em soluções diferentes e criativas para problemas do dia a dia. Sua mente é imaginativa e inventiva." },
+    { name: "Curiosidade", virtue: "Sabedoria", desc: "Você explora o mundo com interesse genuíno. Faz perguntas, investiga e se fascina pelo desconhecido. Está sempre aberto a novas experiências." },
+    { name: "Julgamento", virtue: "Sabedoria", desc: "Você pensa criticamente e analisa situações com cuidado. Pesa prós e contras, evita conclusões precipitadas e muda de ideia com novas evidências." },
+    { name: "Amor pelo Aprendizado", virtue: "Sabedoria", desc: "Você ama adquirir novos conhecimentos e habilidades. Lê, estuda e se sente animado ao dominar algo novo. O aprendizado é uma fonte de prazer." },
+    { name: "Perspectiva", virtue: "Sabedoria", desc: "Você oferece sabedoria e visão ampla. Vê o quadro geral, dá conselhos profundos e ajuda os outros a encontrarem clareza em momentos difíceis." },
+    { name: "Coragem", virtue: "Coragem", desc: "Você enfrenta medos e desafios com valentia. Defende suas crenças, fala a verdade sob pressão e assume riscos calculados quando necessário." },
+    { name: "Perseverança", virtue: "Coragem", desc: "Você termina o que começa, mesmo com obstáculos. Mantém o foco em metas longas, trabalha duro e não desiste facilmente." },
+    { name: "Integridade", virtue: "Coragem", desc: "Você é honesto, autêntico e age de acordo com seus valores. Cumpre promessas, evita mentiras e vive com transparência." },
+    { name: "Entusiasmo", virtue: "Coragem", desc: "Você vive com energia e paixão. Aborda a vida com excitação, contagia os outros e se empolga facilmente com novas ideias." },
+    { name: "Bondade", virtue: "Humanidade", desc: "Você ajuda os outros com generosidade e sem esperar nada em troca. Pratica atos de gentileza diariamente e se preocupa com o bem-estar alheio." },
+    { name: "Amor", virtue: "Humanidade", desc: "Você forma vínculos profundos e carinhosos. Valoriza relacionamentos íntimos, demonstra afeto e prioriza tempo com quem ama." },
+    { name: "Inteligência Social", virtue: "Humanidade", desc: "Você entende emoções e dinâmicas entre pessoas. Lê sinais sociais, sabe confortar, adapta-se ao contexto e ajuda a resolver conflitos." },
+    { name: "Trabalho em Equipe", virtue: "Justiça", desc: "Você colabora bem em grupos, é leal e contribui para o sucesso coletivo. Celebra vitórias do time e coloca o grupo acima do ego." },
+    { name: "Equidade", virtue: "Justiça", desc: "Você trata todos com justiça e imparcialidade. Evita favoritismos, defende a igualdade e julga pelas ações, não pelas aparências." },
+    { name: "Liderança", virtue: "Justiça", desc: "Você guia e motiva grupos com confiança. Organiza projetos, inspira os outros e toma decisões difíceis quando necessário." },
+    { name: "Perdão", virtue: "Temperança", desc: "Você libera ressentimentos e perdoa quem errou. Dá segundas chances, escolhe a paz e não guarda mágoas do passado." },
+    { name: "Humildade", virtue: "Temperança", desc: "Você deixa seus feitos falarem por si. Não se gaba, aprende com os outros, admite erros e valoriza todas as contribuições." },
+    { name: "Prudência", virtue: "Temperança", desc: "Você pensa antes de agir e evita riscos desnecessários. Planeja com cuidado, pesa consequências e toma decisões conscientes." },
+    { name: "Autocontrole", virtue: "Temperança", desc: "Você regula emoções, impulsos e desejos. Resiste a tentações, mantém a calma sob pressão e evita excessos." },
+    { name: "Apreciação da Beleza", virtue: "Transcendência", desc: "Você se emociona com a natureza, arte e excelência. Para para admirar o belo no dia a dia e se sente inspirado por ele." },
+    { name: "Gratidão", virtue: "Transcendência", desc: "Você reconhece e valoriza as coisas boas da vida. Expressa gratidão aos outros e mantém uma atitude de apreciação, mesmo em dias difíceis." },
+    { name: "Esperança", virtue: "Transcendência", desc: "Você mantém otimismo e acredita em um futuro melhor. Planeja com confiança, se recupera de decepções e vê oportunidades nos desafios." },
+    { name: "Humor", virtue: "Transcendência", desc: "Você vê o lado leve da vida. Ri facilmente, usa o humor para aliviar tensões e gosta de fazer os outros rirem." },
+    { name: "Espiritualidade", virtue: "Transcendência", desc: "Você busca propósito e conexão com algo maior. Reflete sobre o sentido da vida e encontra paz em práticas espirituais ou contemplativas." }
+  ];
+
+  const questions = [
+    "Eu penso em novas maneiras de fazer as coisas.", "Eu gosto de inventar soluções originais.", "Eu crio coisas novas regularmente.", "Eu uso a imaginação para resolver problemas.", "Eu sou criativo no meu trabalho ou hobbies.",
+    "Eu faço muitas perguntas sobre o mundo.", "Eu exploro coisas novas por curiosidade.", "Eu me interesso por temas desconhecidos.", "Eu gosto de investigar como as coisas funcionam.", "Eu sou fascinado pelo desconhecido.",
+    "Eu analiso prós e contras antes de decidir.", "Eu evito tirar conclusões precipitadas.", "Eu penso criticamente sobre as informações.", "Eu considero múltiplos pontos de vista.", "Eu mudo de ideia com novas evidências.",
+    "Eu leio para aprender coisas novas.", "Eu gosto de dominar novas habilidades.", "Eu me sinto animado ao aprender.", "Eu busco conhecimento por prazer.", "Eu estudo tópicos por conta própria.",
+    "Eu dou conselhos sábios aos outros.", "Eu vejo o quadro geral nas situações.", "Eu ajudo os outros a terem clareza.", "Eu reflito sobre a vida com profundidade.", "Eu ofereço insights valiosos.",
+    "Eu enfrento meus medos.", "Eu defendo o que acredito.", "Eu falo a verdade mesmo sob pressão.", "Eu assumo riscos calculados.", "Eu supero obstáculos com valentia.",
+    "Eu termino o que começo.", "Eu persisto apesar das dificuldades.", "Eu mantenho o foco em metas longas.", "Eu não desisto facilmente.", "Eu trabalho duro até concluir.",
+    "Eu sou honesto em tudo que faço.", "Eu cumpro minhas promessas.", "Eu ajo de acordo com meus valores.", "Eu sou autêntico com os outros.", "Eu evito mentir ou enganar.",
+    "Eu me sinto cheio de energia pela vida.", "Eu abordo tarefas com entusiasmo.", "Eu me empolgo facilmente com ideias.", "Eu vivo com paixão.", "Eu contagio os outros com minha energia.",
+    "Eu ajudo os outros sem esperar retorno.", "Eu faço favores espontaneamente.", "Eu sou gentil com estranhos.", "Eu me preocupo com o bem-estar alheio.", "Eu pratico atos de bondade diariamente.",
+    "Eu demonstro afeto às pessoas próximas.", "Eu valorizo relacionamentos íntimos.", "Eu me sinto amado e amo em troca.", "Eu priorizo tempo com quem amo.", "Eu sou carinhoso e atencioso.",
+    "Eu percebo as emoções dos outros.", "Eu sei como confortar alguém.", "Eu adapto meu comportamento ao contexto.", "Eu leio bem sinais sociais.", "Eu ajudo a resolver conflitos.",
+    "Eu coopero bem em grupos.", "Eu contribuo para o sucesso da equipe.", "Eu sou leal aos meus colegas.", "Eu celebro vitórias do time.", "Eu coloco o grupo acima do ego.",
+    "Eu trato todos com justiça.", "Eu evito favoritismos.", "Eu defendo a igualdade.", "Eu julgo pelas ações, não aparências.", "Eu sou imparcial em decisões.",
+    "Eu organizo e guio grupos.", "Eu motivo os outros a darem o melhor.", "Eu assumo responsabilidade em projetos.", "Eu inspiro confiança.", "Eu tomo decisões difíceis quando necessário.",
+    "Eu perdoo quem me magoou.", "Eu libero rancores.", "Eu dou segundas chances.", "Eu não guardo mágoa.", "Eu escolho a paz em vez do ressentimento.",
+    "Eu deixo meus feitos falarem por si.", "Eu não me gabo das conquistas.", "Eu aprendo com os outros.", "Eu admito quando erro.", "Eu valorizo todas as contribuições.",
+    "Eu penso antes de agir.", "Eu evito riscos desnecessários.", "Eu planejo com cuidado.", "Eu peso consequências.", "Eu sou cauteloso com escolhas.",
+    "Eu controlo meus impulsos.", "Eu resisto a tentações.", "Eu mantenho a calma sob pressão.", "Eu regulo minhas emoções.", "Eu evito excessos.",
+    "Eu paro para admirar a natureza.", "Eu me emociono com arte ou música.", "Eu noto beleza no dia a dia.", "Eu aprecio excelência em qualquer área.", "Eu me sinto inspirado pela beleza.",
+    "Eu agradeço pelas coisas boas.", "Eu expresso gratidão aos outros.", "Eu mantenho um diário de gratidão.", "Eu valorizo o que tenho.", "Eu sou grato mesmo em dias ruins.",
+    "Eu acredito em um futuro melhor.", "Eu mantenho o otimismo.", "Eu planejo com confiança.", "Eu me recupero de decepções.", "Eu vejo oportunidades em desafios.",
+    "Eu rio facilmente.", "Eu faço piadas para aliviar o clima.", "Eu vejo o lado engraçado da vida.", "Eu uso humor para lidar com estresse.", "Eu gosto de fazer os outros rirem.",
+    "Eu sinto conexão com algo maior.", "Eu busco propósito na vida.", "Eu reflito sobre o sentido da existência.", "Eu pratico meditação ou oração.", "Eu encontro paz em práticas espirituais."
+  ];
+
+  const optLabels = [
+    { v:1, t:"1. Nada a ver comigo" },
+    { v:2, t:"2. Pouco a ver" },
+    { v:3, t:"3. Neutro" },
+    { v:4, t:"4. Tem a ver comigo" },
+    { v:5, t:"5. Tudo a ver comigo" }
+  ];
+
+  function startTest() {
+    const name = document.getElementById('name').value.trim();
+    const wpp = document.getElementById('whatsapp').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const age = document.getElementById('age').value.trim();
+
+    if (!name || !email || !validateEmail(email) || wpp.length < 14 || !age) {
+      alert("Por favor, preencha corretamente Nome, E-mail, Idade e WhatsApp completo.");
+      return;
     }
 
-    function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+    current = 0;
+    showStep("step-quiz");
+    renderQuestion();
+    updateProgressUI();
+  }
 
-    const strengthData = [
-      { name: "Criatividade", virtue: "Sabedoria", desc: "Você gera ideias novas e originais. Gosta de pensar em soluções diferentes e criativas para problemas do dia a dia. Sua mente é imaginativa e inventiva." },
-      { name: "Curiosidade", virtue: "Sabedoria", desc: "Você explora o mundo com interesse genuíno. Faz perguntas, investiga e se fascina pelo desconhecido. Está sempre aberto a novas experiências." },
-      { name: "Julgamento", virtue: "Sabedoria", desc: "Você pensa criticamente e analisa situações com cuidado. Pesa prós e contras, evita conclusões precipitadas e muda de ideia com novas evidências." },
-      { name: "Amor pelo Aprendizado", virtue: "Sabedoria", desc: "Você ama adquirir novos conhecimentos e habilidades. Lê, estuda e se sente animado ao dominar algo novo. O aprendizado é uma fonte de prazer." },
-      { name: "Perspectiva", virtue: "Sabedoria", desc: "Você oferece sabedoria e visão ampla. Vê o 'quadro geral', dá conselhos profundos e ajuda os outros a encontrarem clareza em momentos difíceis." },
-      { name: "Coragem", virtue: "Coragem", desc: "Você enfrenta medos e desafios com valentia. Defende suas crenças, fala a verdade sob pressão e assume riscos calculados quando necessário." },
-      { name: "Perseverança", virtue: "Coragem", desc: "Você termina o que começa, mesmo com obstáculos. Mantém o foco em metas longas, trabalha duro e não desiste facilmente." },
-      { name: "Integridade", virtue: "Coragem", desc: "Você é honesto, autêntico e age de acordo com seus valores. Cumpre promessas, evita mentiras e vive com transparência." },
-      { name: "Entusiasmo", virtue: "Coragem", desc: "Você vive com energia e paixão. Aborda a vida com excitação, contagia os outros e se empolga facilmente com novas ideias." },
-      { name: "Bondade", virtue: "Humanidade", desc: "Você ajuda os outros com generosidade e sem esperar nada em troca. Pratica atos de gentileza diariamente e se preocupa com o bem-estar alheio." },
-      { name: "Amor", virtue: "Humanidade", desc: "Você forma vínculos profundos e carinhosos. Valoriza relacionamentos íntimos, demonstra afeto e prioriza tempo com quem ama." },
-      { name: "Inteligência Social", virtue: "Humanidade", desc: "Você entende emoções e dinâmicas entre pessoas. Lê sinais sociais, sabe confortar, adapta-se ao contexto e ajuda a resolver conflitos." },
-      { name: "Trabalho em Equipe", virtue: "Justiça", desc: "Você colabora bem em grupos, é leal e contribui para o sucesso coletivo. Celebra vitórias do time e coloca o grupo acima do ego." },
-      { name: "Equidade", virtue: "Justiça", desc: "Você trata todos com justiça e imparcialidade. Evita favoritismos, defende a igualdade e julga pelas ações, não pelas aparências." },
-      { name: "Liderança", virtue: "Justiça", desc: "Você guia e motiva grupos com confiança. Organiza projetos, inspira os outros e toma decisões difíceis quando necessário." },
-      { name: "Perdão", virtue: "Temperança", desc: "Você libera ressentimentos e perdoa quem errou. Dá segundas chances, escolhe a paz e não guarda mágoas do passado." },
-      { name: "Humildade", virtue: "Temperança", desc: "Você deixa seus feitos falarem por si. Não se gaba, aprende com os outros, admite erros e valoriza todas as contribuições." },
-      { name: "Prudência", virtue: "Temperança", desc: "Você pensa antes de agir e evita riscos desnecessários. Planeja com cuidado, pesa consequências e toma decisões conscientes." },
-      { name: "Autocontrole", virtue: "Temperança", desc: "Você regula emoções, impulsos e desejos. Resiste a tentações, mantém a calma sob pressão e evita excessos." },
-      { name: "Apreciação da Beleza", virtue: "Transcendência", desc: "Você se emociona com a natureza, arte e excelência. Para para admirar o belo no dia a dia e se sente inspirado por ele." },
-      { name: "Gratidão", virtue: "Transcendência", desc: "Você reconhece e valoriza as coisas boas da vida. Expressa gratidão aos outros e mantém uma atitude de apreciação, mesmo em dias difíceis." },
-      { name: "Esperança", virtue: "Transcendência", desc: "Você mantém otimismo e acredita em um futuro melhor. Planeja com confiança, se recupera de decepções e vê oportunidades nos desafios." },
-      { name: "Humor", virtue: "Transcendência", desc: "Você vê o lado leve da vida. Ri facilmente, usa o humor para aliviar tensões e gosta de fazer os outros rirem." },
-      { name: "Espiritualidade", virtue: "Transcendência", desc: "Você busca propósito e conexão com algo maior. Reflete sobre o sentido da vida e encontra paz em práticas espirituais ou contemplativas." }
-    ];
+  function renderQuestion() {
+    document.getElementById("q-current").textContent = String(current + 1);
+    document.getElementById("question-text").textContent = `"${questions[current]}"`;
 
-    const questions = [
-      "Eu penso em novas maneiras de fazer as coisas.", "Eu gosto de inventar soluções originais.", "Eu crio coisas novas regularmente.", "Eu uso a imaginação para resolver problemas.", "Eu sou criativo no meu trabalho ou hobbies.",
-      "Eu faço muitas perguntas sobre o mundo.", "Eu exploro coisas novas por curiosidade.", "Eu me interesso por temas desconhecidos.", "Eu gosto de investigar como as coisas funcionam.", "Eu sou fascinado pelo desconhecido.",
-      "Eu analiso prós e contras antes de decidir.", "Eu evito tirar conclusões precipitadas.", "Eu penso criticamente sobre as informações.", "Eu considero múltiplos pontos de vista.", "Eu mudo de ideia com novas evidências.",
-      "Eu leio para aprender coisas novas.", "Eu gosto de dominar novas habilidades.", "Eu me sinto animado ao aprender.", "Eu busco conhecimento por prazer.", "Eu estudo tópicos por conta própria.",
-      "Eu dou conselhos sábios aos outros.", "Eu vejo o 'quadro geral' nas situações.", "Eu ajudo os outros a terem clareza.", "Eu reflito sobre a vida com profundidade.", "Eu ofereço insights valiosos.",
-      "Eu enfrento meus medos.", "Eu defendo o que acredito.", "Eu falo a verdade mesmo sob pressão.", "Eu assumo riscos calculados.", "Eu supero obstáculos com valentia.",
-      "Eu termino o que começo.", "Eu persisto apesar das dificuldades.", "Eu mantenho o foco em metas longas.", "Eu não desisto facilmente.", "Eu trabalho duro até concluir.",
-      "Eu sou honesto em tudo que faço.", "Eu cumpro minhas promessas.", "Eu ajo de acordo com meus valores.", "Eu sou autêntico com os outros.", "Eu evito mentir ou enganar.",
-      "Eu me sinto cheio de energia pela vida.", "Eu abordo tarefas com entusiasmo.", "Eu me empolgo facilmente com ideias.", "Eu vivo com paixão.", "Eu contagio os outros com minha energia.",
-      "Eu ajudo os outros sem esperar retorno.", "Eu faço favores espontaneamente.", "Eu sou gentil com estranhos.", "Eu me preocupo com o bem-estar alheio.", "Eu pratico atos de bondade diariamente.",
-      "Eu demonstro afeto às pessoas próximas.", "Eu valorizo relacionamentos íntimos.", "Eu me sinto amado e amo em troca.", "Eu priorizo tempo com quem amo.", "Eu sou carinhoso e atencioso.",
-      "Eu percebo as emoções dos outros.", "Eu sei como confortar alguém.", "Eu adapto meu comportamento ao contexto.", "Eu leio bem 'sinais sociais'.", "Eu ajudo a resolver conflitos.",
-      "Eu coopero bem em grupos.", "Eu contribuo para o sucesso da equipe.", "Eu sou leal aos meus colegas.", "Eu celebro vitórias do time.", "Eu coloco o grupo acima do ego.",
-      "Eu trato todos com justiça.", "Eu evito favoritismos.", "Eu defendo a igualdade.", "Eu julgo pelas ações, não aparências.", "Eu sou imparcial em decisões.",
-      "Eu organizo e guio grupos.", "Eu motivo os outros a darem o melhor.", "Eu assumo responsabilidade em projetos.", "Eu inspiro confiança.", "Eu tomo decisões difíceis quando necessário.",
-      "Eu perdoo quem me magoou.", "Eu libero rancores.", "Eu dou segundas chances.", "Eu não guardo mágoa.", "Eu escolho a paz em vez do ressentimento.",
-      "Eu deixo meus feitos falarem por si.", "Eu não me gabo das conquistas.", "Eu aprendo com os outros.", "Eu admito quando erro.", "Eu valorizo todas as contribuições.",
-      "Eu penso antes de agir.", "Eu evito riscos desnecessários.", "Eu planejo com cuidado.", "Eu peso consequências.", "Eu sou cauteloso com escolhas.",
-      "Eu controlo meus impulsos.", "Eu resisto a tentações.", "Eu mantenho a calma sob pressão.", "Eu regulo minhas emoções.", "Eu evito excessos.",
-      "Eu paro para admirar a natureza.", "Eu me emociono com arte ou música.", "Eu noto beleza no dia a dia.", "Eu aprecio excelência em qualquer área.", "Eu me sinto inspirado pela beleza.",
-      "Eu agradeço pelas coisas boas.", "Eu expresso gratidão aos outros.", "Eu mantenho um diário de gratidão.", "Eu valorizo o que tenho.", "Eu sou grato mesmo em dias ruins.",
-      "Eu acredito em um futuro melhor.", "Eu mantenho o otimismo.", "Eu planejo com confiança.", "Eu me recupero de decepções.", "Eu vejo oportunidades em desafios.",
-      "Eu rio facilmente.", "Eu faço piadas para aliviar o clima.", "Eu vejo o lado engraçado da vida.", "Eu uso humor para lidar com estresse.", "Eu gosto de fazer os outros rirem.",
-      "Eu sinto conexão com algo maior.", "Eu busco propósito na vida.", "Eu reflito sobre o sentido da existência.", "Eu pratico meditação ou oração.", "Eu encontro paz em práticas espirituais."
-    ];
+    const elOptions = document.getElementById("options");
+    elOptions.innerHTML = "";
 
-    let current = 0;
-    const TOTAL_Q = 120;
-    let responses = new Array(TOTAL_Q).fill(null);
+    optLabels.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "opt" + (responses[current] === opt.v ? " selected" : "");
+      div.setAttribute("aria-checked", responses[current] === opt.v ? "true" : "false");
+      div.dataset.value = String(opt.v);
+      div.textContent = opt.t;
+      div.onclick = () => selectAnswer(current + 1, opt.v);
+      elOptions.appendChild(div);
+    });
 
-    function startTest() {
-      const name = document.getElementById('name').value.trim();
-      const wpp = document.getElementById('whatsapp').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const age = document.getElementById('age').value.trim();
-      
-      if (!name || !email || !validateEmail(email) || wpp.length < 14 || !age) {
-        alert("Por favor, preencha corretamente Nome, E-mail, Idade e WhatsApp completo.");
-        return;
+    document.getElementById("btn-prev").disabled = current === 0;
+  }
+
+  function updateProgressUI() {
+    const answered = responses.filter(v => v !== null).length;
+    document.getElementById("answered-count").textContent = String(answered);
+    document.getElementById("progress-fill").style.width = `${Math.round((answered / TOTAL_Q) * 100)}%`;
+  }
+
+  function goPrev() {
+    if (current > 0) {
+      current--;
+      renderQuestion();
+      updateProgressUI();
+    }
+  }
+
+  function selectAnswer(qNum, value) {
+    responses[qNum - 1] = value;
+
+    [...document.getElementById("options").children].forEach(c => {
+      const selected = c.dataset.value === String(value);
+      c.classList.toggle("selected", selected);
+      c.setAttribute("aria-checked", selected ? "true" : "false");
+    });
+
+    updateProgressUI();
+
+    setTimeout(() => {
+      if (current < TOTAL_Q - 1) {
+        current++;
+        renderQuestion();
+        updateProgressUI();
+      } else {
+        processResults();
       }
-      
-      document.getElementById('intro').classList.add('hidden');
-      document.getElementById('test-section').classList.remove('hidden');
-      loadQuestion(0);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 250);
+  }
+
+  function getVirtueCounts(sortedTop5) {
+    const counts = {};
+    sortedTop5.forEach(item => {
+      counts[item.virtue] = (counts[item.virtue] || 0) + 1;
+    });
+
+    let topVirtue = "-";
+    let topCount = 0;
+    Object.keys(counts).forEach(v => {
+      if (counts[v] > topCount) {
+        topVirtue = v;
+        topCount = counts[v];
+      }
+    });
+
+    return { topVirtue, topCount };
+  }
+
+  function createStrengthBlock(s, rank) {
+    const percent = (parseFloat(s.score) / 5) * 100;
+    let fillClass = "fill-mid";
+
+    if (rank <= 5) fillClass = "fill-top";
+    else if (rank >= 20) fillClass = "fill-low";
+
+    return `
+      <div class="rank-item">
+        <div class="rank-item-head">
+          <div>
+            <div class="rank-item-name">${rank}. ${sanitize(s.name)}</div>
+            <div class="rank-item-label">${sanitize(s.virtue)}</div>
+          </div>
+          <span class="rank-badge">Score ${sanitize(s.score)}</span>
+        </div>
+        <div class="bar-track" style="margin-bottom:10px;">
+          <div class="bar-fill ${fillClass}" style="width:${percent}%"></div>
+        </div>
+        <p class="rank-desc"><strong>${sanitize(s.name)}:</strong> ${sanitize(s.desc)}</p>
+      </div>
+    `;
+  }
+
+  async function processResults() {
+    showStep("step-results");
+
+    const scores = strengthData.map((s, idx) => {
+      let sum = 0;
+      for (let i = 0; i < 5; i++) sum += responses[idx * 5 + i] || 0;
+      return { ...s, score: (sum / 5).toFixed(2) };
+    });
+
+    const sorted = scores.sort((a, b) => b.score - a.score);
+
+    const name = document.getElementById('name').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const age = document.getElementById('age').value.trim();
+    const education = document.getElementById('education').value.trim();
+    const profession = document.getElementById('profession').value.trim();
+
+    const primeiroNome = toTitleCase(name.split(" ")[0] || "Participante");
+    document.getElementById("result-title").textContent = `Resultado de ${primeiroNome}`;
+
+    document.getElementById('personal-data').innerHTML = `
+      <div><strong>Nome:</strong> ${sanitize(name)}</div>
+      <div><strong>WhatsApp:</strong> ${sanitize(whatsapp)}</div>
+      <div><strong>E-mail:</strong> ${sanitize(email)}</div>
+      <div><strong>Idade:</strong> ${sanitize(age)} anos</div>
+      <div><strong>Escolaridade:</strong> ${sanitize(education || 'Não informada')}</div>
+      <div><strong>Profissão:</strong> ${sanitize(profession || 'Não informada')}</div>
+    `;
+
+    document.getElementById('top5-results').innerHTML = sorted.slice(0, 5).map((s, i) => createStrengthBlock(s, i + 1)).join('');
+    document.getElementById('mid-rank-results').innerHTML = sorted.slice(5, 19).map((s, i) => createStrengthBlock(s, i + 6)).join('');
+    document.getElementById('bot-rank-results').innerHTML = sorted.slice(19, 24).map((s, i) => createStrengthBlock(s, i + 20)).join('');
+
+    document.getElementById("top1Name").textContent = sorted[0].name;
+    document.getElementById("top1Score").textContent = `Score ${sorted[0].score}`;
+    document.getElementById("top5Name").textContent = sorted[4].name;
+    document.getElementById("top5Score").textContent = `Score ${sorted[4].score}`;
+    document.getElementById("lastName").textContent = sorted[23].name;
+    document.getElementById("lastScore").textContent = `Score ${sorted[23].score}`;
+
+    const virtueInfo = getVirtueCounts(sorted.slice(0, 5));
+    document.getElementById("topVirtue").textContent = virtueInfo.topVirtue;
+    document.getElementById("topVirtueCount").textContent = virtueInfo.topCount > 0 ? `${virtueInfo.topCount} força(s) no Top 5` : "-";
+
+    document.getElementById("general-reading").textContent =
+      `Seu Top 5 representa as forças de caráter mais vivas no seu perfil atual. Quando essas forças são ativadas com frequência na rotina, no trabalho e nos relacionamentos, você tende a experimentar mais engajamento, sentido e naturalidade nas suas ações.`;
+    document.getElementById("attention-reading").textContent =
+      `As forças menos utilizadas não devem ser vistas como defeitos, mas como aspectos com menor ativação no momento. Em alguns contextos, desenvolver conscientemente essas forças pode ampliar sua flexibilidade emocional, social e estratégica.`;
+
+    if (autoSendInProgress || autoSendDone) return;
+    autoSendInProgress = true;
+
+    try {
+      const { doc, pdfFileName } = await generatePdfDocAndFileName(sorted);
+      const base64Pdf = doc.output("datauristring").split(",")[1];
+
+      const payload = {
+        apiKey: API_KEY,
+        testId: "via_forcas",
+        nome: name,
+        whatsapp: whatsapp,
+        email: email,
+        idade: age,
+        escolaridade: education,
+        profissao: profession,
+        top1: sorted[0].name,
+        top2: sorted[1].name,
+        top3: sorted[2].name,
+        top4: sorted[3].name,
+        top5: sorted[4].name,
+        bot1: sorted[19].name,
+        bot2: sorted[20].name,
+        bot3: sorted[21].name,
+        bot4: sorted[22].name,
+        bot5: sorted[23].name,
+        pdfBase64: base64Pdf,
+        pdfFileName: pdfFileName,
+        sendEmail: true
+      };
+
+      await fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      autoSendDone = true;
+      document.getElementById('auto-send-status').textContent = "";
+      document.getElementById('final-success-message').style.display = "block";
+
+    } catch (e) {
+      console.error(e);
+      emailSendAttempts++;
+      if (emailSendAttempts < MAX_EMAIL_ATTEMPTS) {
+        document.getElementById('auto-send-status').textContent = `⚠️ Tentativa ${emailSendAttempts}/${MAX_EMAIL_ATTEMPTS} - Falha na conexão, reconectando...`;
+        setTimeout(() => processResults(), 3000);
+      } else {
+        document.getElementById('auto-send-status').textContent = "❌ Falha no processamento. Tire um print e envie para impulsoflow@gmail.com";
+      }
+    } finally {
+      autoSendInProgress = false;
+    }
+  }
+
+  async function generatePdfDocAndFileName(sortedScores) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+    const pageW = 210, pageH = 297, margin = 14;
+    const contentW = pageW - margin * 2;
+    let y = margin;
+
+    const name = document.getElementById('name').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const age = document.getElementById('age').value.trim();
+    const education = document.getElementById('education').value.trim();
+    const profession = document.getElementById('profession').value.trim();
+    const dateStr = new Date().toLocaleDateString("pt-BR");
+
+    const formattedName = toTitleCase(sanitize(name));
+    const formattedProf = toTitleCase(sanitize(profession || "Não informada"));
+    const researchTitle = "Pesquisa Forças de Caráter";
+
+    function drawHexagon(cx, cy, r) {
+      const pts = [];
+      for (let i = 0; i < 6; i++) {
+        const ang = (Math.PI / 180) * (60 * i - 90);
+        pts.push({
+          x: cx + r * Math.cos(ang),
+          y: cy + r * Math.sin(ang)
+        });
+      }
+      return pts;
     }
 
-    function loadQuestion(index) {
-        current = index;
-        const qNum = index + 1;
-        const progress = Math.round(((qNum - 1) / TOTAL_Q) * 100);
+    function drawCover() {
+      doc.setFillColor(255, 255, 255);
+      doc.rect(0, 0, pageW, pageH, "F");
 
-        const html = `
-            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-xl border border-gray-100 mb-8">
-                <div class="flex justify-between items-center mb-5 sm:mb-6">
-                    <p class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider uppercase">Passo ${qNum} de ${TOTAL_Q}</p>
-                    <span class="text-[10px] sm:text-xs font-bold text-blue-700 bg-blue-100 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">${progress}% concluído</span>
-                </div>
-                
-                <p class="text-xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 text-gray-800 leading-tight">"${questions[index]}"</p>
-                
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-6">
-                    ${[1, 2, 3, 4, 5].map(val => `
-                        <div class="scale-option flex-1 flex flex-row sm:flex-col items-center sm:justify-center p-3 sm:p-4 gap-3 sm:gap-2 ${responses[index] === val ? 'selected' : ''}" data-value="${val}" onclick="selectAnswer(${qNum}, ${val})">
-                            <span class="text-xl sm:text-2xl font-extrabold text-gray-700 shrink-0 w-6 text-center">${val}</span>
-                            <small class="text-[11px] sm:text-xs font-bold text-gray-500 text-left sm:text-center leading-tight uppercase tracking-wide flex-1">
-                                ${val === 1 ? 'Nada a ver comigo' : val === 2 ? 'Pouco a ver' : val === 3 ? 'Neutro' : val === 4 ? 'Tem a ver comigo' : 'Tudo a ver comigo'}
-                            </small>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div class="flex justify-between mt-2 sm:mt-6">
-                    ${index > 0 ? `<button onclick="loadQuestion(${index - 1})" class="text-gray-500 hover:text-blue-800 font-bold text-sm transition px-4 py-2 hover:bg-gray-100 rounded-lg">← Voltar</button>` : '<div></div>'}
-                </div>
-                
-                <div class="progress-bar mt-4 sm:mt-6"><div class="progress-bar-fill" style="width: ${progress}%"></div></div>
-            </div>
-        `;
-        document.getElementById('current-question').innerHTML = html;
+      doc.setFillColor(44, 89, 145);
+      doc.triangle(0, 0, pageW, 0, pageW, 36, "F");
+
+      doc.setFillColor(213, 226, 244);
+      doc.triangle(0, 24, pageW, 50, pageW, 36, "F");
+
+      doc.setFillColor(229, 238, 249);
+      doc.triangle(0, 58, 83, 35, 0, 24, "F");
+
+      doc.setFillColor(245, 248, 252);
+      doc.triangle(0, 58, 83, 35, pageW, 50, "F");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.setTextColor(26, 59, 107);
+      doc.text("Impulso Coaching", pageW / 2 - 9, 64, { align: "center" });
+
+      doc.setDrawColor(182, 190, 202);
+      doc.setLineWidth(0.9);
+      doc.line(pageW / 2 + 39, 52, pageW / 2 + 39, 74);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(13);
+      doc.setTextColor(90, 90, 90);
+      doc.text("Resultado da Pesquisa", pageW / 2, 96, { align: "center" });
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.setTextColor(28, 100, 210);
+      doc.text(researchTitle, pageW / 2, 108, { align: "center" });
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.2);
+      doc.setTextColor(95, 95, 95);
+      const coverIntro = doc.splitTextToSize(
+        "Mapeie as virtudes e forças que mais influenciam sua identidade, seu comportamento e sua capacidade de gerar impacto.",
+        120
+      );
+      doc.text(coverIntro, pageW / 2, 120, { align: "center" });
+
+      const cx = pageW / 2;
+      const cy = 178;
+      const outer = drawHexagon(cx, cy, 34);
+      const inner = drawHexagon(cx, cy, 21);
+
+      doc.setDrawColor(37, 99, 235);
+      doc.setLineWidth(1.1);
+      for (let i = 0; i < 6; i++) {
+        const next = (i + 1) % 6;
+        doc.line(outer[i].x, outer[i].y, outer[next].x, outer[next].y);
+        doc.line(inner[i].x, inner[i].y, inner[next].x, inner[next].y);
+        doc.line(inner[i].x, inner[i].y, outer[i].x, outer[i].y);
+      }
+
+      const virtueColors = [
+        [37, 99, 235],
+        [220, 38, 38],
+        [16, 185, 129],
+        [147, 51, 234],
+        [13, 148, 136],
+        [217, 119, 6]
+      ];
+
+      const virtueNames = [
+        "Sabedoria",
+        "Coragem",
+        "Humanidade",
+        "Justiça",
+        "Temperança",
+        "Transcendência"
+      ];
+
+      for (let i = 0; i < 6; i++) {
+        doc.setFillColor(...virtueColors[i]);
+        doc.circle(outer[i].x, outer[i].y, 4.1, "F");
+      }
+
+      doc.setFillColor(15, 23, 42);
+      doc.circle(cx, cy, 5.8, "F");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7.3);
+      virtueNames.forEach((name, i) => {
+        const p = outer[i];
+        let tx = p.x, ty = p.y;
+        if (i === 0) ty -= 8;
+        if (i === 1) { tx += 18; ty -= 1; }
+        if (i === 2) { tx += 20; ty += 8; }
+        if (i === 3) ty += 14;
+        if (i === 4) { tx -= 24; ty += 8; }
+        if (i === 5) { tx -= 24; ty -= 1; }
+
+        doc.setTextColor(60, 60, 60);
+        doc.text(name, tx, ty, { align: "center" });
+      });
+
+      const points = [];
+      for (let i = 0; i < 24; i++) {
+        const ang = (Math.PI / 180) * ((360 / 24) * i - 90);
+        points.push({
+          x: cx + 46 * Math.cos(ang),
+          y: cy + 46 * Math.sin(ang)
+        });
+      }
+
+      points.forEach((p, i) => {
+        const color = virtueColors[Math.min(Math.floor(i / 4), 5)];
+        doc.setFillColor(...color);
+        doc.circle(p.x, p.y, 1.6, "F");
+      });
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(90, 90, 90);
+      doc.text("6 Virtudes • 24 Forças de Caráter", pageW / 2, 235, { align: "center" });
+
+      doc.setFillColor(44, 89, 145);
+      doc.triangle(-2, pageH + 2, pageW + 2, pageH - 52, pageW + 2, pageH + 2, "F");
+
+      doc.setFillColor(84, 126, 180);
+      doc.triangle(-2, pageH - 44, 110, pageH - 24, -2, pageH + 2, "F");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(255, 255, 255);
+      doc.text("Instituto Impulso Coaching", 17, 279);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.8);
+      doc.setTextColor(225, 235, 246);
+      doc.text("A Mudança Pode Acontecer Em Um Instante", 17, 287);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(255, 255, 255);
+      doc.text(formattedName, pageW - 17, 279, { align: "right" });
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.8);
+      doc.setTextColor(225, 235, 246);
+      doc.text(dateStr, pageW - 17, 287, { align: "right" });
     }
 
-    function selectAnswer(qNum, value) {
-        responses[qNum - 1] = value;
-        document.querySelectorAll('.scale-option').forEach(el => el.classList.remove('selected'));
-        document.querySelector(`.scale-option[data-value="${value}"]`).classList.add('selected');
-        
-        setTimeout(() => { 
-            if (current < TOTAL_Q - 1) {
-                loadQuestion(current + 1); 
-            } else {
-                processResults();
-            }
-        }, 400); 
+    function drawPageHeader() {
+      doc.setFillColor(34,84,138);
+      doc.rect(0,0,pageW,12,"F");
+      doc.setTextColor(255,255,255);
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(10);
+      doc.text("Instituto Impulso Coaching de Liderança", margin, 8);
+      doc.setFontSize(8);
+      doc.text(formattedName.substring(0, 32), pageW - margin, 8, { align: "right" });
+
+      doc.setTextColor(51,51,51);
+      doc.setFont("helvetica","normal");
+      doc.setFontSize(10);
+      y = margin + 10;
     }
 
-    function createStrengthBlock(s, rank) {
+    function newPage() {
+      doc.addPage();
+      drawPageHeader();
+    }
+
+    function ensureSpace(requiredHeight = 20) {
+      if (y + requiredHeight > pageH - 18) newPage();
+    }
+
+    function addSectionTitle(text) {
+      ensureSpace(14);
+      doc.setFillColor(248,250,252);
+      doc.rect(margin, y - 4, contentW, 8, "F");
+      doc.setDrawColor(11,99,206);
+      doc.setLineWidth(2);
+      doc.line(margin, y - 4, margin, y + 4);
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(14);
+      doc.setTextColor(11,42,82);
+      doc.text(text.toUpperCase(), margin + 4, y + 1);
+      y += 12;
+    }
+
+    function addParagraph(text, fontSize = 10, lineH = 5) {
+      doc.setFont("helvetica","normal");
+      doc.setFontSize(fontSize);
+      doc.setTextColor(51,51,51);
+      const lines = doc.splitTextToSize(String(text), contentW);
+      lines.forEach(line => {
+        if (y > pageH - 20) newPage();
+        doc.text(line, margin, y);
+        y += lineH;
+      });
+      y += 2;
+    }
+
+    function addStrengthGroup(title, items, color, badgeLabel) {
+      addSectionTitle(title);
+
+      items.forEach((s, idx) => {
         const percent = (parseFloat(s.score) / 5) * 100;
-        let titleColor, gradientColor;
-        
-        if (rank <= 5) {
-            titleColor = 'text-teal-600'; gradientColor = 'from-teal-400 to-teal-600';
-        } else if (rank <= 19) {
-            titleColor = 'text-orange-500'; gradientColor = 'from-orange-400 to-orange-500';
-        } else {
-            titleColor = 'text-red-500'; gradientColor = 'from-red-400 to-red-500';
-        }
 
-        return `
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                <h4 class="font-extrabold ${titleColor} text-xl mb-1">${rank}. ${s.name}</h4>
-                <p class="text-[11px] font-bold text-gray-400 tracking-wider mb-2 uppercase">${s.virtue}</p>
-                <div class="w-full bg-gray-100 rounded-full h-1.5 mb-3">
-                    <div class="bg-gradient-to-r ${gradientColor} h-1.5 rounded-full" style="width: ${percent}%"></div>
-                </div>
-                <p class="text-sm text-gray-700 leading-relaxed"><span class="font-bold text-gray-800">${s.name}:</span> ${s.desc}</p>
-            </div>
-        `;
+        const cardX = margin;
+        const cardW = contentW;
+        const padX = 6;
+        const textW = cardW - (padX * 2);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.2);
+        const descLines = doc.splitTextToSize(`${s.name}: ${s.desc}`, textW);
+
+        const descHeight = descLines.length * 4.8;
+        const cardH = 24 + descHeight + 6;
+
+        ensureSpace(cardH + 6);
+
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(214, 230, 250);
+        doc.setLineWidth(0.6);
+        doc.roundedRect(cardX, y, cardW, cardH, 4, 4, "FD");
+
+        doc.setFillColor(color[0], color[1], color[2]);
+        doc.roundedRect(cardX, y, 3.2, cardH, 2, 2, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12.5);
+        doc.setTextColor(color[0], color[1], color[2]);
+
+        const titleText = badgeLabel === "top"
+          ? `${idx + 1}. ${s.name}`
+          : s.name;
+
+        doc.text(titleText, cardX + padX, y + 7);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(120, 120, 120);
+        doc.text(s.virtue.toUpperCase(), cardX + padX, y + 12);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8.5);
+        doc.setTextColor(90, 90, 90);
+        doc.text(`Score: ${s.score}`, cardX + cardW - padX, y + 7, { align: "right" });
+
+        doc.setFillColor(232, 239, 249);
+        doc.roundedRect(cardX + padX, y + 15, cardW - (padX * 2), 3.2, 2, 2, "F");
+
+        doc.setFillColor(color[0], color[1], color[2]);
+        doc.roundedRect(cardX + padX, y + 15, ((cardW - (padX * 2)) * percent) / 100, 3.2, 2, 2, "F");
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.2);
+        doc.setTextColor(60, 60, 60);
+        doc.text(descLines, cardX + padX, y + 24);
+
+        y += cardH + 6;
+      });
     }
 
-    async function processResults() {
-        document.getElementById('test-section').classList.add('hidden');
-        document.getElementById('result').classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    drawCover();
+    doc.addPage();
+    drawPageHeader();
 
-        const scores = strengthData.map((s, idx) => {
-            let sum = 0;
-            for (let i = 0; i < 5; i++) { sum += responses[idx * 5 + i] || 0; }
-            return { ...s, score: (sum / 5).toFixed(2) };
-        });
-        
-        const sorted = scores.sort((a, b) => b.score - a.score);
+    addSectionTitle("1. Participante");
 
-        const name = document.getElementById('name').value.trim();
-        const whatsapp = document.getElementById('whatsapp').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const age = document.getElementById('age').value.trim();
-        const education = document.getElementById('education').value.trim();
-        const profession = document.getElementById('profession').value.trim();
-        
-        // DADOS DO CLIENTE HTML
-        document.getElementById('personal-data').innerHTML = `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
-                <div><span class="font-bold text-gray-800">Nome:</span> ${sanitize(name)}</div>
-                <div><span class="font-bold text-gray-800">WhatsApp:</span> ${sanitize(whatsapp)}</div>
-                <div><span class="font-bold text-gray-800">E-mail:</span> ${sanitize(email)}</div>
-                <div><span class="font-bold text-gray-800">Idade:</span> ${sanitize(age)} anos</div>
-                <div><span class="font-bold text-gray-800">Escolaridade:</span> ${sanitize(education || 'Não informada')}</div>
-                <div><span class="font-bold text-gray-800">Profissão:</span> ${sanitize(profession || 'Não informada')}</div>
-            </div>
-        `;
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(9);
+    doc.setTextColor(100,116,139);
+    doc.text("Nome:", margin, y);
+    doc.text("Idade:", margin + 100, y);
 
-        document.getElementById('top5-results').innerHTML = sorted.slice(0, 5).map((s, i) => createStrengthBlock(s, i + 1)).join('');
-        document.getElementById('mid-rank-results').innerHTML = sorted.slice(5, 19).map((s, i) => createStrengthBlock(s, i + 6)).join('');
-        document.getElementById('bot-rank-results').innerHTML = sorted.slice(19, 24).map((s, i) => createStrengthBlock(s, i + 20)).join('');
+    doc.setFont("helvetica","normal");
+    doc.setTextColor(51,51,51);
+    doc.text(formattedName, margin + 22, y);
+    doc.text(`${sanitize(age)} anos`, margin + 118, y);
+    y += 7;
 
-        if (autoSendInProgress || autoSendDone) return;
-        autoSendInProgress = true;
+    doc.setFont("helvetica","bold");
+    doc.setTextColor(100,116,139);
+    doc.text("Profissão:", margin, y);
+    doc.text("Escolaridade:", margin + 100, y);
 
-        try {
-            const { doc, pdfFileName } = await generatePdfDocAndFileName(sorted);
-            const base64Pdf = doc.output("datauristring").split(",")[1];
-            
-            const payload = {
-                apiKey: API_KEY, 
-                testId: "via_forcas", 
-                nome: name, 
-                whatsapp: whatsapp, 
-                email: email,
-                idade: age,
-                escolaridade: education,
-                profissao: profession,
-                top1: sorted[0].name, top2: sorted[1].name, top3: sorted[2].name, top4: sorted[3].name, top5: sorted[4].name,
-                bot1: sorted[19].name, bot2: sorted[20].name, bot3: sorted[21].name, bot4: sorted[22].name, bot5: sorted[23].name,
-                pdfBase64: base64Pdf, 
-                pdfFileName: pdfFileName, 
-                sendEmail: true
-            };
+    doc.setFont("helvetica","normal");
+    doc.setTextColor(51,51,51);
+    doc.text(formattedProf, margin + 22, y);
+    doc.text(sanitize(education || "Não informada"), margin + 125, y);
+    y += 7;
 
-            await fetch(WEB_APP_URL, {
-                method: "POST", mode: "no-cors", 
-                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
-                body: JSON.stringify(payload)
-            });
-            
-            autoSendDone = true;
-            document.getElementById('auto-send-status').classList.add('hidden');
-            document.getElementById('final-success-message').classList.remove('hidden');
+    doc.setFont("helvetica","bold");
+    doc.setTextColor(100,116,139);
+    doc.text("E-mail:", margin, y);
+    doc.text("WhatsApp:", margin + 100, y);
 
-        } catch (e) {
-            console.error(e);
-            emailSendAttempts++;
-            if (emailSendAttempts < MAX_EMAIL_ATTEMPTS) {
-                document.getElementById('auto-send-status').innerHTML = `⚠️ Tentativa ${emailSendAttempts}/${MAX_EMAIL_ATTEMPTS} - Falha na conexão, reconectando...`;
-                document.getElementById('auto-send-status').classList.replace('bg-yellow-50', 'bg-red-50');
-                document.getElementById('auto-send-status').classList.replace('text-yellow-800', 'text-red-800');
-                setTimeout(processResults, 3000);
-            } else {
-                document.getElementById('auto-send-status').innerHTML = "❌ Falha no processamento. Tire um print e envie para impulsoflow@gmail.com";
-            }
-        } finally { autoSendInProgress = false; }
+    doc.setFont("helvetica","normal");
+    doc.setTextColor(51,51,51);
+    doc.text(sanitize(email).toLowerCase(), margin + 22, y);
+    doc.text(sanitize(whatsapp), margin + 126, y);
+    y += 10;
+
+    addSectionTitle("2. Introdução");
+    addParagraph("Durante muitos anos, grande parte das avaliações humanas foi construída para identificar falhas, desvios, limitações ou sintomas. A proposta desta pesquisa segue outra direção: revelar o que existe de mais forte, saudável e valioso em sua estrutura de caráter.");
+    addParagraph("O modelo das Forças de Caráter organiza 24 forças humanas em 6 grandes virtudes universais: Sabedoria, Coragem, Humanidade, Justiça, Temperança e Transcendência. Essas forças influenciam diretamente a forma como você pensa, aprende, enfrenta desafios, constrói relações, toma decisões e encontra propósito.");
+    addParagraph("Seu Top 5 representa suas forças de assinatura — características mais naturais, energéticas e presentes no seu funcionamento. Quando essas forças encontram espaço real para serem expressas, a tendência é que você viva com mais engajamento, clareza, autenticidade e sentido.");
+    addParagraph("Mais do que um ranking, este relatório oferece uma leitura estratégica sobre o seu potencial humano. Ele pode ajudar você a compreender melhor sua identidade, fortalecer escolhas mais alinhadas e ampliar sua capacidade de gerar impacto com mais consistência.");
+
+    addSectionTitle("3. Mapa das Virtudes");
+    const virtues = [
+      { name: "Sabedoria", items: "Criatividade • Curiosidade • Julgamento • Amor pelo Aprendizado • Perspectiva", color: [37, 99, 235], bg: [239, 246, 255] },
+      { name: "Coragem", items: "Coragem • Perseverança • Integridade • Entusiasmo", color: [220, 38, 38], bg: [254, 242, 242] },
+      { name: "Humanidade", items: "Bondade • Amor • Inteligência Social", color: [16, 185, 129], bg: [236, 253, 245] },
+      { name: "Justiça", items: "Trabalho em Equipe • Equidade • Liderança", color: [147, 51, 234], bg: [250, 245, 255] },
+      { name: "Temperança", items: "Perdão • Humildade • Prudência • Autocontrole", color: [13, 148, 136], bg: [240, 253, 250] },
+      { name: "Transcendência", items: "Apreciação da Beleza • Gratidão • Esperança • Humor • Espiritualidade", color: [217, 119, 6], bg: [255, 251, 235] }
+    ];
+
+    virtues.forEach(v => {
+      ensureSpace(16);
+      doc.setFillColor(v.color[0], v.color[1], v.color[2]);
+      doc.rect(margin, y, 42, 12, "F");
+
+      doc.setFillColor(v.bg[0], v.bg[1], v.bg[2]);
+      doc.rect(margin + 42, y, contentW - 42, 12, "F");
+
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(8.5);
+      doc.setTextColor(255,255,255);
+      doc.text(v.name.toUpperCase(), margin + 21, y + 7, { align: "center" });
+
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(7.2);
+      doc.setTextColor(v.color[0], v.color[1], v.color[2]);
+      const itemLines = doc.splitTextToSize(v.items, contentW - 50);
+      doc.text(itemLines, margin + 45, y + 5.5);
+
+      y += itemLines.length > 1 ? 16 : 13;
+    });
+
+    newPage();
+    addStrengthGroup("4. Suas 5 Forças Principais", sortedScores.slice(0, 5), [13, 148, 136], "top");
+    addStrengthGroup("5. Forças de Suporte", sortedScores.slice(5, 12), [234, 88, 12], "mid");
+    addStrengthGroup("6. Forças de Suporte Complementares", sortedScores.slice(12, 19), [249, 115, 22], "mid");
+    addStrengthGroup("7. Forças Menos Utilizadas", sortedScores.slice(19, 24), [220, 38, 38], "low");
+
+    const totalPages = doc.internal.getNumberOfPages();
+    for (let i = 2; i <= totalPages; i++) {
+      doc.setPage(i);
+      doc.setDrawColor(200,210,220);
+      doc.setLineWidth(0.5);
+      doc.line(margin, pageH - 12, pageW - margin, pageH - 12);
+
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(8);
+      doc.setTextColor(11,42,82);
+      doc.text("Instituto Impulso Coaching de Liderança", margin, pageH - 8);
+
+      doc.setFont("helvetica","normal");
+      doc.setTextColor(100,116,139);
+      doc.text("Pesquisa Forças de Caráter", margin, pageH - 4.5);
+      doc.text(`Página ${i - 1} de ${totalPages - 1}`, pageW - margin, pageH - 8, { align: "right" });
     }
 
-    async function generatePdfDocAndFileName(sortedScores) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ format: "a4" });
-        
-        const name = document.getElementById('name').value.trim();
-        const whatsapp = document.getElementById('whatsapp').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const age = document.getElementById('age').value.trim();
-        const education = document.getElementById('education').value.trim();
-        const profession = document.getElementById('profession').value.trim();
-        const dateStr = new Date().toLocaleDateString("pt-BR");
-
-        let yPdf = 20;
-
-        // FAIXA DINÂMICA NO TOPO
-        const addHeader = (bgColor) => {
-            doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
-            doc.rect(0, 0, 210, 22, "F"); 
-            
-            doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(255, 255, 255);
-            doc.text("Forças de Caráter", 20, 14);
-            
-            doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text("Instituto Impulso Caoching - Rogério Braga", 105, 14, { align: "center" });
-            doc.text(dateStr, 190, 14, { align: "right" });
-        };
-
-        const addFooter = () => {
-            doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150);
-            doc.text("©2026 Instituto Impulso Coaching. All Rights Reserved. | Rogério Augusto Braga", 20, 290);
-        };
-
-        function checkPageBreak(currentY, neededSpace, color) {
-            if (currentY + neededSpace > 280) {
-                addFooter();
-                doc.addPage();
-                addHeader(color);
-                return 35; // Recomeça abaixo da faixa colorida
-            }
-            return currentY;
-        }
-
-        // ==========================================
-        // PÁGINA 1: DADOS E MATRIZ (FAIXA AZUL)
-        // ==========================================
-        addHeader([30, 64, 175]);
-        yPdf = 35;
-
-        // BOX DE DADOS DO CLIENTE
-        doc.setFillColor(249, 250, 251); 
-        doc.setDrawColor(229, 231, 235); 
-        doc.setLineWidth(0.5);
-        doc.roundedRect(20, yPdf, 170, 26, 2, 2, "FD"); 
-        
-        doc.setFontSize(9); 
-        doc.setTextColor(50, 50, 50);
-        
-        doc.setFont("helvetica", "bold"); doc.text(`Nome:`, 25, yPdf + 8);
-        doc.setFont("helvetica", "normal"); doc.text(`${sanitize(name)}`, 37, yPdf + 8);
-        doc.setFont("helvetica", "bold"); doc.text(`WhatsApp:`, 110, yPdf + 8);
-        doc.setFont("helvetica", "normal"); doc.text(`${sanitize(whatsapp)}`, 130, yPdf + 8);
-
-        doc.setFont("helvetica", "bold"); doc.text(`E-mail:`, 25, yPdf + 15);
-        doc.setFont("helvetica", "normal"); doc.text(`${sanitize(email)}`, 38, yPdf + 15);
-        doc.setFont("helvetica", "bold"); doc.text(`Idade:`, 110, yPdf + 15);
-        doc.setFont("helvetica", "normal"); doc.text(`${sanitize(age)} anos`, 122, yPdf + 15);
-
-        doc.setFont("helvetica", "bold"); doc.text(`Escolaridade:`, 25, yPdf + 22);
-        doc.setFont("helvetica", "normal"); doc.text(`${sanitize(education || 'Não informada')}`, 48, yPdf + 22);
-        doc.setFont("helvetica", "bold"); doc.text(`Profissão:`, 110, yPdf + 22);
-        doc.setFont("helvetica", "normal"); doc.text(`${sanitize(profession || 'Não informada')}`, 128, yPdf + 22);
-        
-        yPdf += 36; 
-
-        // TEXTOS INTRODUTÓRIOS
-        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(30, 64, 175);
-        doc.text("Virtudes e Forças de Caráter", 20, yPdf); yPdf += 8;
-        
-        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(55, 65, 81);
-        const intro1 = "Na medicina e psiquiatria, existe um manual de classificação de doenças mentais chamado DSM (Manual Diagnóstico e Estatístico de Transtornos Mentais). Os criadores do VIA pensaram: por que não fazer um manual de classificação do que há de melhor no ser humano? Assim nasceu o VIA, o mapeando de 24 características focadas no seu potencial.";
-        doc.text(doc.splitTextToSize(intro1, 170), 20, yPdf); yPdf += 26;
-
-        doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.setTextColor(30, 64, 175);
-        doc.text("O Para-choque contra a Depressão", 20, yPdf); yPdf += 7;
-        
-        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(55, 65, 81);
-        const intro2 = "As suas 5 principais características (seu Top 5) são o seu para-choque natural. Se você estiver em um local onde as suas principais forças não puderem ser trabalhadas — ou seja, se não estiverem em atividade em pelo menos 75% do seu tempo — você terá um problema.\n\nQuando você consegue viver em função das suas cinco maiores características, a depressão dificilmente fará parte da sua vida. É preciso que elas estejam sempre em uso, pois então o seu trabalho será constante em FLOW (Fluxo). Isso é o verdadeiro engajamento!";
-        doc.text(doc.splitTextToSize(intro2, 170), 20, yPdf); yPdf += 30;
-
-        // MATRIZ VETORIAL
-        const tableVirtues = [
-            { name: "SABEDORIA", color: [37, 99, 235], bgLight: [239, 246, 255], items: ["Criatividade", "Curiosidade", "Julgamento", "Amor pelo Aprendizado", "Perspectiva"] },
-            { name: "CORAGEM", color: [220, 38, 38], bgLight: [254, 242, 242], items: ["Coragem", "Perseverança", "Integridade", "Entusiasmo"] },
-            { name: "HUMANIDADE", color: [16, 185, 129], bgLight: [236, 253, 245], items: ["Bondade", "Amor", "Inteligência Social"] },
-            { name: "JUSTIÇA", color: [147, 51, 234], bgLight: [250, 245, 255], items: ["Trabalho em Equipe", "Equidade", "Liderança"] },
-            { name: "TEMPERANÇA", color: [13, 148, 136], bgLight: [240, 253, 250], items: ["Perdão", "Humildade", "Prudência", "Autocontrole"] },
-            { name: "TRANSCENDÊNCIA", color: [217, 119, 6], bgLight: [255, 251, 235], items: ["Apreciação da Beleza", "Gratidão", "Esperança", "Humor", "Espiritualidade"] }
-        ];
-
-        let rowH = 18;
-        let tableX = 20;
-        let col1W = 45;
-        let col2W = 125;
-
-        tableVirtues.forEach((v) => {
-            doc.setFillColor(v.color[0], v.color[1], v.color[2]);
-            doc.rect(tableX, yPdf, col1W, rowH, "F");
-            
-            doc.setFillColor(v.bgLight[0], v.bgLight[1], v.bgLight[2]);
-            doc.rect(tableX + col1W, yPdf, col2W, rowH, "F");
-            
-            doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(255, 255, 255);
-            let textW = doc.getTextWidth(v.name);
-            doc.text(v.name, tableX + (col1W / 2) - (textW / 2), yPdf + 10.5);
-            
-            doc.setFont("helvetica", "bold"); doc.setFontSize(8.5); doc.setTextColor(v.color[0], v.color[1], v.color[2]);
-            let itemsStr = v.items.join("   •   ");
-            
-            let lines = doc.splitTextToSize(itemsStr, col2W - 10);
-            let textY = yPdf + (rowH / 2) - ((lines.length - 1) * 2) + 3; 
-            doc.text(lines, tableX + col1W + 5, textY);
-            
-            doc.setDrawColor(255, 255, 255); doc.setLineWidth(1);
-            doc.line(tableX, yPdf + rowH, tableX + col1W + col2W, yPdf + rowH);
-            
-            yPdf += rowH;
-        });
-
-        // ==========================================
-        // PÁGINA 2: COMEÇA AS 5 FORÇAS PRINCIPAIS (VERDE)
-        // ==========================================
-        addFooter();
-        doc.addPage();
-        
-        let currentColor = [13, 148, 136]; // Teal / Verde
-        addHeader(currentColor);
-        yPdf = 35;
-
-        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(currentColor[0], currentColor[1], currentColor[2]);
-        doc.text("Suas 5 Forças de Assinatura (Principais)", 20, yPdf);
-        yPdf += 12;
-
-        let lastCategory = 1;
-
-        // RANKING DINÂMICO
-        sortedScores.forEach((s, index) => {
-            const rank = index + 1;
-            
-            let category = 1;
-            let titleColor = [13, 148, 136]; // Verde Teal
-            let sectionTitle = "";
-            
-            if (rank > 5 && rank <= 19) {
-                category = 2;
-                titleColor = [234, 88, 12]; // Laranja
-                sectionTitle = "Forças de Suporte (Posição 6 a 19)";
-            } else if (rank > 19) {
-                category = 3;
-                titleColor = [220, 38, 38]; // Vermelho
-                sectionTitle = "Forças Menos Utilizadas (Posição 20 a 24)";
-            }
-
-            // ==========================================
-            // LÓGICA DE QUEBRA DE PÁGINA OBRIGATÓRIA PARA NOVA CATEGORIA
-            // ==========================================
-            if (category !== lastCategory) {
-                currentColor = titleColor; // Muda a cor da faixa
-                
-                // Força o encerramento da folha atual e abre uma nova em branco
-                addFooter();
-                doc.addPage();
-                
-                // Insere o novo cabeçalho colorido da nova categoria
-                addHeader(currentColor);
-                yPdf = 35;
-                
-                // Insere o título da nova categoria no topo da folha
-                doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.setTextColor(titleColor[0], titleColor[1], titleColor[2]);
-                doc.text(sectionTitle, 20, yPdf);
-                yPdf += 12;
-                
-                lastCategory = category;
-            }
-
-            // Quebra de página automática caso a lista da categoria seja longa
-            yPdf = checkPageBreak(yPdf, 25, currentColor);
-            
-            doc.setFontSize(13); doc.setFont("helvetica", "bold");
-            doc.setTextColor(titleColor[0], titleColor[1], titleColor[2]);
-            doc.text(`${rank}. ${s.name}`, 20, yPdf);
-            yPdf += 6;
-            
-            doc.setFontSize(9); doc.setFont("helvetica", "bold"); doc.setTextColor(150, 150, 150);
-            doc.text(s.virtue.toUpperCase(), 20, yPdf);
-            yPdf += 6;
-
-            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(60, 60, 60);
-            const descText = `${s.name}: ${s.desc}`;
-            const descLines = doc.splitTextToSize(descText, 170);
-            doc.text(descLines, 20, yPdf);
-            
-            yPdf += (descLines.length * 5) + 8;
-        });
-
-        addFooter();
-
-        return { doc, pdfFileName: `VIA_Forcas_${sanitize(name).replace(/\s+/g, "_")}.pdf` };
-    }
-  </script>
+    const safeName = formattedName.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+    return { doc, pdfFileName: `Forcas_de_Carater_${safeName}.pdf` };
+  }
+</script>
 </body>
 </html>
