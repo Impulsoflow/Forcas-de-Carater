@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora VIA Character Strengths - 120 Itens</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f7f9; margin: 0; padding: 20px; }
+    h1, h2 { color: #2c3e50; text-align: center; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .question { margin-bottom: 18px; padding: 12px; background: #f9f9f9; border-radius: 8px; }
+    label { display: block; margin: 8px 0; cursor: pointer; }
+    input[type="radio"] { margin-right: 8px; }
+    button { background: #3498db; color: white; padding: 12px 25px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+    button:hover { background: #2980b9; }
+    #resultado { margin-top: 40px; display: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background: #3498db; color: white; }
+    .ranking { font-weight: bold; color: #27ae60; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora VIA Character Strengths</h1>
+    <p style="text-align:center;">Responda de 1 a 5 para cada frase abaixo:</p>
+    <p style="text-align:center;">
+      <strong>1</strong> = Muito diferente de mim &nbsp;&nbsp;
+      <strong>2</strong> = Um pouco diferente &nbsp;&nbsp;
+      <strong>3</strong> = Mais ou menos &nbsp;&nbsp;
+      <strong>4</strong> = Parecido comigo &nbsp;&nbsp;
+      <strong>5</strong> = Muito parecido comigo
+    </p>
+
+    <form id="viaForm">
+      <!-- As 120 perguntas serão inseridas aqui pelo JavaScript -->
+    </form>
+
+    <button onclick="calcularVIA()">Calcular Minhas Forças de Caráter</button>
+
+    <div id="resultado">
+      <h2>Seus Resultados - Ranking das 24 Forças</h2>
+      <table id="tabelaResultados">
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Força de Caráter</th>
+            <th>Média</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <p><strong>Suas Signature Strengths</strong> (as 5 mais altas) geralmente são as que você mais usa naturalmente.</p>
+    </div>
+  </div>
+
+  <script>
+    // === LISTA DAS 120 FRASES (limpa e corrigida) ===
+    const frases = [
+      "Ser capaz de propor ideias novas e diferentes é um de meus pontos fortes.",
+      "Eu tenho tomado posições, mesmo frente a forte oposição.",
+      "Eu nunca desisto de uma tarefa antes de terminá-la.",
+      "Eu sempre mantenho minhas promessas.",
+      "Eu não tenho problemas em comer alimentos saudáveis.",
+      "Eu sempre considero o lado bom das coisas.",
+      "Eu sou uma pessoa espiritualizada.",
+      "Eu sei como me comportar em diferentes situações sociais.",
+      "Eu sempre termino o que começo.",
+      "Eu realmente gosto de fazer pequenos favores aos amigos.",
+      "Há pessoas em minha vida que se preocupam tanto com o meu bem-estar e sentimentos quanto com seus próprios.",
+      "Como um líder, eu trato a todos igualmente bem, independentemente de quem seja.",
+      "Mesmo com doces e guloseimas à minha disposição, eu nunca como demais.",
+      "Eu pratico minha religião.",
+      "Eu raramente guardo rancor.",
+      "Eu estou sempre ocupado com algo interessante.",
+      "Eu vibro quando aprendo algo novo.",
+      "Eu gosto de pensar em novas maneiras de fazer as coisas.",
+      "Não importa a situação, eu sou capaz de me ajustar a ela.",
+      "Eu nunca hesito em expressar publicamente uma opinião não popular.",
+      "Eu acredito que a honestidade é a base da confiança.",
+      "Eu ponho de lado minhas prioridades para animar quem está pra baixo.",
+      "Eu trato todas as pessoas de forma igual, independentemente de quem sejam.",
+      "Um dos meus pontos fortes é ajudar pessoas a trabalharem bem em grupo mesmo quando elas têm suas diferenças.",
+      "Eu sou uma pessoa extremamente disciplinada.",
+      "Eu sempre penso antes de falar.",
+      "Eu experiencio profundas emoções quando vejo a beleza das coisas.",
+      "Pelo menos uma vez por dia, eu paro e conto minhas bênçãos.",
+      "Apesar dos desafios, eu sempre me sinto esperançoso quanto ao futuro.",
+      "Minha fé nunca me abandona durante tempos difíceis.",
+      "Eu não ajo como se fosse uma pessoa especial.",
+      "Eu aproveito a oportunidade de iluminar o dia de alguém com uma risada.",
+      "Nunca procuro me vingar.",
+      "Eu valorizo minha habilidade de pensar criticamente.",
+      "Eu tenho habilidade de fazer outras pessoas se sentirem interessantes.",
+      "Eu devo me apoiar no que acredito mesmo quando resulta em algo negativo.",
+      "Eu termino as tarefas apesar dos obstáculos.",
+      "Eu adoro fazer as outras pessoas felizes.",
+      "Eu sou a pessoa mais importante da vida de alguém.",
+      "Eu faço o meu melhor quando sou membro de um grupo.",
+      "Os direitos de todos são igualmente importantes para mim.",
+      "Eu vejo beleza naquilo que as outras pessoas não vêem.",
+      "Eu tenho uma imagem clara na minha mente sobre o que eu quero que aconteça no futuro.",
+      "Nunca conto vantagem sobre minhas realizações.",
+      "Eu tento me divertir em qualquer situação.",
+      "Eu amo o que faço.",
+      "Eu estou entusiasmado com muitas atividades diferentes.",
+      "Eu sou um verdadeiro aprendiz ao longo da vida.",
+      "Eu sempre proponho novas maneiras de fazer algo.",
+      "As pessoas me descrevem como alguém a frente do meu tempo.",
+      "Minhas promessas são confiáveis.",
+      "Eu ofereço a todos uma chance.",
+      "Para ser um líder efetivo, eu trato todos da mesma forma.",
+      "Eu nunca quero coisas que não são boas para mim a longo prazo, mesmo que me façam sentir bem no curto prazo.",
+      "Eu frequentemente fico sem palavras diante da beleza retratada em um filme.",
+      "Eu sou uma pessoa extremamente grata.",
+      "Eu tento acrescentar humor a tudo o que eu faço.",
+      "Eu espero ansiosamente cada dia.",
+      "Eu acredito que o melhor é perdoar e esquecer.",
+      "Eu tenho muitos interesses.",
+      "Quando a situação exige, eu posso ser extremamente racional.",
+      "Meus amigos dizem que eu tenho muitas ideias novas e diferentes.",
+      "Eu sempre estou disposto a olhar para as coisas e vê-las mais amplamente.",
+      "Eu sempre defendo as minhas convicções.",
+      "Eu não desisto.",
+      "Eu sou fiel a meus valores pessoais.",
+      "Eu sempre sinto a presença do amor em minha vida.",
+      "Eu sempre posso seguir uma dieta.",
+      "Eu sempre penso nas consequências antes de agir.",
+      "Eu sempre estou consciente da beleza natural do ambiente.",
+      "Minha fé me faz quem eu sou.",
+      "Eu tenho muita energia.",
+      "Eu posso encontrar algo interessante em qualquer situação.",
+      "Eu leio o tempo todo.",
+      "Pensar através dos fatos é parte de quem eu sou.",
+      "Eu tenho pensamentos originais.",
+      "Eu sou bom em perceber o que os outros estão sentindo.",
+      "Eu tenho uma visão madura na vida.",
+      "Eu fico tão excitado com a boa sorte dos outros quanto com a minha.",
+      "Eu posso expressar amor por alguém.",
+      "Sem exceção, eu apoio meus colegas de grupo.",
+      "Meus amigos sempre me dizem que eu sou um líder forte, mas justo.",
+      "Eu sempre diferencio o certo do errado.",
+      "Eu me sinto grato pelo que recebi na vida.",
+      "Eu sei que vou alcançar os objetivos que coloquei para mim.",
+      "Eu raramente chamo atenção para mim mesmo.",
+      "Eu tenho um ótimo senso de humor.",
+      "Eu raramente tento me vingar.",
+      "Eu sempre peso os prós e os contras.",
+      "Eu me empenho em qualquer coisa que eu decida fazer.",
+      "Eu gosto de ser gentil com os outros.",
+      "Eu posso aceitar o amor de outras pessoas.",
+      "Mesmo que eu discorde deles, eu sempre respeito os líderes de meu grupo.",
+      "Mesmo que eu não goste de alguém, trato-o de forma justa.",
+      "Como um líder, eu tento fazer todos os membros do grupo felizes.",
+      "Sou uma pessoa muito cuidadosa.",
+      "Eu me surpreendo com coisas simples da vida que outras pessoas podem não perceber.",
+      "Quando olho para minha vida, encontro muitas coisas para me sentir grata.",
+      "Ouvi dizer que modéstia é uma de minhas mais notáveis características.",
+      "Eu normalmente estou disposto a oferecer a alguém uma outra chance.",
+      "Eu acho minha vida extremamente interessante.",
+      "Eu já li uma grande variedade de livros.",
+      "Eu tento ter boas razões para minhas decisões importantes.",
+      "Eu sempre sei o que dizer para fazer as pessoas se sentirem bem.",
+      "Eu posso não dizer aos outros, mas me considero uma pessoa sábia.",
+      "É importante para mim respeitar as decisões tomadas pelo meu grupo.",
+      "Eu sempre faço escolhas cuidadosamente.",
+      "Eu sinto todos os dias um profundo senso de apreciação.",
+      "Se me sinto mal, eu sempre penso nas coisas boas da minha vida.",
+      "Minhas crenças fazem a minha vida importante.",
+      "Eu acordo excitado com as possibilidades do dia.",
+      "Gosto muito de ler livros de não ficção.",   // ← versão corrigida
+      "Os outros me consideram uma pessoa sábia.",
+      "Eu sou uma pessoa corajosa.",
+      "Os outros confiam em mim para guardar seus segredos.",
+      "Eu sacrifico com prazer meu interesse pessoal em benefício do grupo no qual estou.",
+      "Eu acredito que é digno ouvir as opiniões de todos.",
+      "As pessoas se aproximam de mim porque sou humilde.",
+      "Sou conhecido pelo meu senso de humor.",
+      "As pessoas me descrevem como cheio de entusiasmo."
+    ];
+
+    // Mapeamento aproximado dos itens por força (5 itens cada) - baseado na estrutura padrão VIA-120
+    const mapeamento = {
+      "Criatividade": [1, 18, 49, 59, 72],
+      "Curiosidade": [16, 17, 48, 73, 101],
+      "Julgamento": [26, 34, 63, 89, 99],
+      "Amor pelo Aprendizado": [48, 74, 102, 112, 122],   // 112 corrigido
+      "Perspectiva": [63, 88, 105, 113, 115],
+      "Coragem": [2, 30, 64, 74, 124],
+      "Perseverança": [3, 9, 37, 65, 100],
+      "Honestidade": [4, 21, 51, 66, 76],
+      "Vitalidade (Zest)": [46, 57, 72, 82, 130],
+      "Amor": [11, 67, 80, 90, 102],
+      "Bondade": [10, 22, 38, 91, 101],
+      "Inteligência Social": [8, 19, 35, 87, 114],
+      "Trabalho em Equipe": [24, 40, 50, 81, 116],
+      "Justiça": [23, 41, 104, 12, 53],
+      "Liderança": [12, 53, 63, 82, 105],
+      "Perdão": [15, 33, 69, 88, 110],
+      "Humildade": [31, 54, 86, 96, 109],
+      "Prudência": [26, 79, 89, 99, 106],
+      "Autocontrole": [5, 13, 35, 64, 68],
+      "Apreciação da Beleza": [27, 42, 55, 70, 107],
+      "Gratidão": [28, 56, 84, 94, 108],
+      "Esperança": [29, 39, 43, 85, 95],
+      "Humor": [6, 32, 45, 67, 97],
+      "Espiritualidade": [7, 14, 40, 71, 81]
+    };
+
+    // Nomes completos em português para exibição
+    const nomesForcas = {
+      "Criatividade": "Criatividade",
+      "Curiosidade": "Curiosidade",
+      "Julgamento": "Julgamento / Pensamento Crítico",
+      "Amor pelo Aprendizado": "Amor pelo Aprendizado",
+      "Perspectiva": "Perspectiva / Sabedoria",
+      "Coragem": "Coragem / Bravura",
+      "Perseverança": "Perseverança",
+      "Honestidade": "Honestidade",
+      "Vitalidade (Zest)": "Vitalidade (Zest)",
+      "Amor": "Amor",
+      "Bondade": "Bondade",
+      "Inteligência Social": "Inteligência Social",
+      "Trabalho em Equipe": "Trabalho em Equipe",
+      "Justiça": "Justiça",
+      "Liderança": "Liderança",
+      "Perdão": "Perdão",
+      "Humildade": "Humildade",
+      "Prudência": "Prudência",
+      "Autocontrole": "Autocontrole",
+      "Apreciação da Beleza": "Apreciação da Beleza e Excelência",
+      "Gratidão": "Gratidão",
+      "Esperança": "Esperança",
+      "Humor": "Humor",
+      "Espiritualidade": "Espiritualidade"
+    };
+
+    // Gerar as perguntas no HTML
+    function carregarPerguntas() {
+      const form = document.getElementById('viaForm');
+      form.innerHTML = '';
+
+      frases.forEach((frase, index) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.innerHTML = `
+          <p><strong>${index + 1}.</strong> ${frase}</p>
+          <label><input type="radio" name="q${index}" value="1" required> 1 - Muito diferente de mim</label>
+          <label><input type="radio" name="q${index}" value="2"> 2 - Um pouco diferente</label>
+          <label><input type="radio" name="q${index}" value="3"> 3 - Mais ou menos</label>
+          <label><input type="radio" name="q${index}" value="4"> 4 - Parecido comigo</label>
+          <label><input type="radio" name="q${index}" value="5"> 5 - Muito parecido comigo</label>
+        `;
+        form.appendChild(div);
+      });
+    }
+
+    // Calcular médias e ranking
+    function calcularVIA() {
+      const respostas = [];
+      for (let i = 0; i < 120; i++) {
+        const radios = document.getElementsByName(`q${i}`);
+        let valor = null;
+        for (let radio of radios) {
+          if (radio.checked) {
+            valor = parseInt(radio.value);
+            break;
+          }
+        }
+        if (valor === null) {
+          alert("Por favor, responda todas as 120 perguntas.");
+          return;
+        }
+        respostas.push(valor);
+      }
+
+      // Calcular média de cada força
+      let resultados = [];
+      for (let [forca, itens] of Object.entries(mapeamento)) {
+        let soma = 0;
+        itens.forEach(num => {
+          // índice no array = num - 1
+          soma += respostas[num - 1];
+        });
+        let media = (soma / 5).toFixed(2);
+        resultados.push({
+          forca: forca,
+          nome: nomesForcas[forca] || forca,
+          media: parseFloat(media)
+        });
+      }
+
+      // Ordenar do maior para o menor
+      resultados.sort((a, b) => b.media - a.media);
+
+      // Exibir tabela
+      const tbody = document.querySelector('#tabelaResultados tbody');
+      tbody.innerHTML = '';
+
+      resultados.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${idx + 1}º</strong></td>
+          <td>${item.nome}</td>
+          <td class="ranking">${item.media}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('resultado').style.display = 'block';
+      window.scrollTo(0, document.getElementById('resultado').offsetTop);
+    }
+
+    // Iniciar a página
+    window.onload = carregarPerguntas;
+  </script>
+</body>
+</html>
