@@ -428,7 +428,8 @@
     .map-card,
     .chart-card,
     .profile-box,
-    .insight-box {
+    .insight-box,
+    .force-map-card {
       background: #fff;
       border: 1px solid #d5e6fb;
       border-radius: 20px;
@@ -439,7 +440,8 @@
 
     .summary-shell h3,
     .map-card h3,
-    .chart-card h3 {
+    .chart-card h3,
+    .force-map-card h3 {
       margin: 0 0 14px;
       color: #12284b;
       font-size: 20px;
@@ -692,6 +694,19 @@
     .v-transcendencia .virtue-name { background: #d97706; }
     .v-transcendencia .virtue-items { background: #fffbeb; }
 
+    .force-map-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding: 20px 0;
+    }
+
+    .force-map-svg {
+      width: 100%;
+      min-height: 480px;
+      display: block;
+      background: #fff;
+    }
+
     .footer {
       margin-top: 20px;
       text-align: center;
@@ -699,6 +714,12 @@
       font-size: 12px;
       font-weight: 700;
       font-family: Arial, sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      .force-map-svg {
+        min-height: 380px;
+      }
     }
   </style>
 </head>
@@ -852,85 +873,36 @@
             </div>
           </div>
 
+          <div class="force-map-card">
+            <h3 style="text-align:center; margin-bottom:8px;">Mapa Analítico das 24 Forças (Radar)</h3>
+            <p style="margin:0 0 12px; color:#64748b; font-size:12px; text-align:center; font-family:Arial,sans-serif; font-weight:700;">
+              Distribuição de impacto do seu perfil (o número no círculo indica a sua colocação real no ranking).
+            </p>
+            <div class="force-map-wrap">
+              <svg id="forceMapSvg" viewBox="0 0 980 760" class="force-map-svg" aria-label="Mapa visual das 24 forças"></svg>
+            </div>
+          </div>
+
           <div class="client-box">
             <h3 style="margin:0 0 12px; color:#12284b; font-size:18px; font-weight:900; font-family:Arial,sans-serif;">Dados do Cliente</h3>
             <div id="personal-data" class="client-grid"></div>
           </div>
 
-          <div class="map-card">
-            <h3>Mapa das 6 Virtudes e 24 Forças</h3>
-            <div class="virtue-table">
-              <div class="virtue-row v-sabedoria">
-                <div class="virtue-name">Sabedoria</div>
-                <div class="virtue-items">
-                  <span class="virtue-pill">Criatividade</span>
-                  <span class="virtue-pill">Curiosidade</span>
-                  <span class="virtue-pill">Julgamento</span>
-                  <span class="virtue-pill">Amor pelo Aprendizado</span>
-                  <span class="virtue-pill">Perspectiva</span>
-                </div>
-              </div>
-
-              <div class="virtue-row v-coragem">
-                <div class="virtue-name">Coragem</div>
-                <div class="virtue-items">
-                  <span class="virtue-pill">Coragem</span>
-                  <span class="virtue-pill">Perseverança</span>
-                  <span class="virtue-pill">Integridade</span>
-                  <span class="virtue-pill">Entusiasmo</span>
-                </div>
-              </div>
-
-              <div class="virtue-row v-humanidade">
-                <div class="virtue-name">Humanidade</div>
-                <div class="virtue-items">
-                  <span class="virtue-pill">Bondade</span>
-                  <span class="virtue-pill">Amor</span>
-                  <span class="virtue-pill">Inteligência Social</span>
-                </div>
-              </div>
-
-              <div class="virtue-row v-justica">
-                <div class="virtue-name">Justiça</div>
-                <div class="virtue-items">
-                  <span class="virtue-pill">Trabalho em Equipe</span>
-                  <span class="virtue-pill">Equidade</span>
-                  <span class="virtue-pill">Liderança</span>
-                </div>
-              </div>
-
-              <div class="virtue-row v-temperanca">
-                <div class="virtue-name">Temperança</div>
-                <div class="virtue-items">
-                  <span class="virtue-pill">Perdão</span>
-                  <span class="virtue-pill">Humildade</span>
-                  <span class="virtue-pill">Prudência</span>
-                  <span class="virtue-pill">Autocontrole</span>
-                </div>
-              </div>
-
-              <div class="virtue-row v-transcendencia">
-                <div class="virtue-name">Transcendência</div>
-                <div class="virtue-items">
-                  <span class="virtue-pill">Apreciação da Beleza</span>
-                  <span class="virtue-pill">Gratidão</span>
-                  <span class="virtue-pill">Esperança</span>
-                  <span class="virtue-pill">Humor</span>
-                  <span class="virtue-pill">Espiritualidade</span>
-                </div>
-              </div>
-            </div>
+          <div class="insight-box" style="border-left: 4px solid #0d9488;">
+            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#0d9488; font-family:Arial,sans-serif; text-transform: uppercase;">Aware & Explore: Potencializando o Top 5</h4>
+            <p style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.8;">Suas 5 forças principais configuram o seu núcleo de excelência. Segundo a ciência do <strong>VIA Institute</strong>, quando você opera ancorado no seu Top 5, acessa o estado de <strong>Flow</strong> cognitivo. Modele sua rotina, delegue tarefas e posicione-se em projetos onde essas virtudes sejam o motor principal. Profissionais que usam suas forças de assinatura diariamente têm <strong>3x mais chances de relatar excelente qualidade de vida</strong> e são <strong>6x mais engajados</strong>.</p>
           </div>
 
-          <div class="insight-box">
-            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#12284b; font-family:Arial,sans-serif;">Leitura Geral</h4>
-            <p id="general-reading" style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.8;">-</p>
+          <div class="insight-box" style="border-left: 4px solid #ea580c;">
+            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#ea580c; font-family:Arial,sans-serif; text-transform: uppercase;">Apply & Navigate: Forças de Sustentação</h4>
+            <p style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.8;">As forças do meio do ranking (6 a 19) são as suas forças fásicas. Elas funcionam como um <strong>canivete suíço psicológico</strong>, emergindo de acordo com o contexto. Elas fornecem a versatilidade necessária para que você se adapte a mudanças de cenário, apoie sua equipe em momentos de transição e mantenha a consistência situacional quando o Top 5 não bastar.</p>
           </div>
 
-          <div class="insight-box">
-            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#12284b; font-family:Arial,sans-serif;">Leitura de Desenvolvimento</h4>
-            <p id="attention-reading" style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.8;">-</p>
+          <div class="insight-box" style="border-left: 4px solid #dc2626;">
+            <h4 style="margin:0 0 6px; font-size:14px; font-weight:900; color:#dc2626; font-family:Arial,sans-serif; text-transform: uppercase;">Protect & Partner: Gerenciando Forças Menores</h4>
+            <p style="margin:0; font-size:12.5px; color:#334155; text-align:justify; line-height:1.8;">As forças da base (20 a 24) não são "defeitos", mas perspectivas que demandam alta energia consciente para serem ativadas. Forçá-las diariamente gera exaustão. A gestão inteligente propõe: 1) <strong>Compensação:</strong> Utilize uma força do seu Top 5 para suprir a demanda. 2) <strong>Alianças Estratégicas:</strong> Cerque-se de parceiros que possuam essas forças naturalmente elevadas, blindando seus pontos cegos de forma cooperativa.</p>
           </div>
+
         </div>
 
         <div class="right-column">
@@ -1571,6 +1543,94 @@
     `;
   }
 
+  function polarToCartesian(cx, cy, radius, angleDeg) {
+    const rad = (Math.PI / 180) * angleDeg;
+    return {
+      x: cx + radius * Math.cos(rad),
+      y: cy + radius * Math.sin(rad)
+    };
+  }
+
+  function renderForceMap(sortedScores) {
+    const svg = document.getElementById("forceMapSvg");
+    if (!svg) return;
+
+    const virtuesList = [
+      { name: "Sabedoria", color: "#2563eb", strengths: ["Criatividade", "Curiosidade", "Julgamento", "Amor pelo Aprendizado", "Perspectiva"] },
+      { name: "Coragem", color: "#dc2626", strengths: ["Coragem", "Perseverança", "Integridade", "Entusiasmo"] },
+      { name: "Humanidade", color: "#10b981", strengths: ["Bondade", "Amor", "Inteligência Social"] },
+      { name: "Justiça", color: "#9333ea", strengths: ["Trabalho em Equipe", "Equidade", "Liderança"] },
+      { name: "Temperança", color: "#0d9488", strengths: ["Perdão", "Humildade", "Prudência", "Autocontrole"] },
+      { name: "Transcendência", color: "#d97706", strengths: ["Apreciação da Beleza", "Gratidão", "Esperança", "Humor", "Espiritualidade"] }
+    ];
+
+    const orderedStrengths = [];
+    virtuesList.forEach(v => {
+      v.strengths.forEach(sName => {
+        const rank = sortedScores.findIndex(x => x.name === sName) + 1;
+        orderedStrengths.push({ name: sName, rank, color: v.color });
+      });
+    });
+
+    const cx = 490;
+    const cy = 360;
+    const radius = 250;
+    let html = "";
+    
+    for(let level=5; level>=1; level--) {
+      const r = radius * (level/5);
+      let pts = "";
+      for(let i=0; i<24; i++) {
+        const angle = i * 15 - 90;
+        const p = polarToCartesian(cx, cy, r, angle);
+        pts += `${p.x},${p.y} `;
+      }
+      const fill = level % 2 === 0 ? "#f8fafc" : "#f1f5f9";
+      html += `<polygon points="${pts.trim()}" fill="${fill}" stroke="#cbd5e1" stroke-width="1"></polygon>`;
+    }
+
+    for(let i=0; i<24; i++) {
+      const angle = i * 15 - 90;
+      const p = polarToCartesian(cx, cy, radius, angle);
+      html += `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="#cbd5e1" stroke-width="1"></line>`;
+    }
+
+    orderedStrengths.forEach((item, i) => {
+      const angle = i * 15 - 90;
+      const p = polarToCartesian(cx, cy, radius + 22, angle);
+      
+      let anchor = "middle";
+      let tx = p.x;
+      let ty = p.y;
+      
+      if(angle > -80 && angle < 80) { anchor = "start"; tx += 4; }
+      if(angle > 100 && angle < 260) { anchor = "end"; tx -= 4; }
+      if(angle === -90) ty -= 8;
+      if(angle === 90) ty += 8;
+      
+      html += `<text x="${tx}" y="${ty}" text-anchor="${anchor}" dominant-baseline="middle" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="${item.color}">${item.name}</text>`;
+    });
+
+    let dataPts = "";
+    let dots = "";
+    orderedStrengths.forEach((item, i) => {
+      const chartPct = 100 - ((item.rank - 1) * (85 / 23)); 
+      const r = radius * (chartPct / 100);
+      const angle = i * 15 - 90;
+      const p = polarToCartesian(cx, cy, r, angle);
+      
+      dataPts += `${p.x},${p.y} `;
+      
+      dots += `<circle cx="${p.x}" cy="${p.y}" r="10" fill="${item.color}" stroke="#ffffff" stroke-width="2"></circle>`;
+      dots += `<text x="${p.x}" y="${p.y + 0.5}" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="900" fill="#ffffff" font-family="Arial">${item.rank}</text>`;
+    });
+
+    html += `<polygon points="${dataPts.trim()}" fill="rgba(11, 99, 206, 0.12)" stroke="#0b2a52" stroke-width="2.5" stroke-linejoin="round"></polygon>`;
+    html += dots;
+
+    svg.innerHTML = html;
+  }
+
   function fillPersonalData() {
     const name = document.getElementById("name").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
@@ -1617,12 +1677,6 @@
     document.getElementById("topVirtueCount").innerHTML = virtueInfo.topCount > 0
       ? `A virtude que aparece com maior densidade entre as forças de maior <strong>destaque</strong> do seu perfil`
       : "-";
-
-    document.getElementById("general-reading").innerHTML =
-      `Seu resultado revela uma configuração singular de <strong>forças de caráter</strong>. As posições mais altas do ranking indicam recursos que tendem a emergir com maior espontaneidade na sua maneira de pensar, agir, decidir, interpretar situações e se relacionar. Essas forças costumam representar aquilo que há de mais <strong>natural</strong>, <strong>energizante</strong>, <strong>consistente</strong> e <strong>autêntico</strong> no seu funcionamento pessoal. Mais do que qualidades isoladas, elas formam um padrão interno de <strong>presença</strong>, <strong>valor</strong> e <strong>contribuição</strong>.`;
-
-    document.getElementById("attention-reading").innerHTML =
-      `As forças que aparecem nas últimas posições não devem ser interpretadas como fragilidades definitivas. Em geral, elas apontam dimensões menos ativadas no momento atual, seja por <strong>contexto</strong>, <strong>hábitos</strong>, <strong>fase de vida</strong> ou estilo predominante. Quando trabalhadas com consciência, intenção e prática, essas forças podem ampliar seu <strong>repertório</strong>, fortalecer seu <strong>equilíbrio</strong> e expandir sua <strong>maturidade comportamental</strong>.`;
   }
 
   async function processResults() {
@@ -1640,6 +1694,7 @@
 
     fillPersonalData();
     renderSummary(sorted);
+    renderForceMap(sorted);
 
     await new Promise(resolve => setTimeout(resolve, 650));
 
@@ -1733,7 +1788,7 @@
       return temp.textContent || temp.innerText || "";
     }
 
-    function drawRichParagraph(htmlText, fontSize = 10, lineH = 5, maxWidth = contentW) {
+    function drawRichParagraph(htmlText, fontSize = 10, lineH = 5, maxWidth = contentW, startX = margin) {
       const html = String(htmlText || "");
       const parts = html.split(/(<strong>.*?<\/strong>)/gi).filter(Boolean);
 
@@ -1742,7 +1797,7 @@
 
       function flushLine() {
         if (!line.length) return;
-        let x = margin;
+        let x = startX;
         line.forEach(seg => {
           doc.setFont("helvetica", seg.bold ? "bold" : "normal");
           doc.text(seg.text, x, y);
@@ -1764,6 +1819,7 @@
           const wordWidth = doc.getTextWidth(word);
 
           if (lineWidth + wordWidth > maxWidth && line.length) {
+            if (word.trim() === "") return; 
             if (y > pageH - 20) newPage();
             flushLine();
           }
@@ -1776,6 +1832,120 @@
       if (y > pageH - 20) newPage();
       flushLine();
       y += 2;
+    }
+
+    function addRichParagraph(htmlText, fontSize = 10, lineH = 5, customWidth, customX) {
+      doc.setFontSize(fontSize);
+      doc.setTextColor(51, 51, 51);
+      drawRichParagraph(htmlText, fontSize, lineH, customWidth || contentW, customX || margin);
+    }
+
+    function drawForceMapPdf(scores) {
+      newPage(); 
+      addSectionTitle("3. Mapa Analítico das 24 Forças (Radar)");
+      
+      addRichParagraph("Este radar representa a sua <strong>impressão digital psicológica</strong>. As forças mais próximas das bordas externas indicam alta naturalidade, domínio e presença contínua em seu comportamento diário. Em contrapartida, as forças desenhadas mais próximas ao centro indicam áreas de menor uso espontâneo ou que exigem maior esforço consciente para serem ativadas no cenário atual.", 9.5, 4.8);
+
+      const virtuesList = [
+        { name: "Sabedoria", colorPdf: [37, 99, 235], strengths: ["Criatividade", "Curiosidade", "Julgamento", "Amor pelo Aprendizado", "Perspectiva"] },
+        { name: "Coragem", colorPdf: [220, 38, 38], strengths: ["Coragem", "Perseverança", "Integridade", "Entusiasmo"] },
+        { name: "Humanidade", colorPdf: [16, 185, 129], strengths: ["Bondade", "Amor", "Inteligência Social"] },
+        { name: "Justiça", colorPdf: [147, 51, 234], strengths: ["Trabalho em Equipe", "Equidade", "Liderança"] },
+        { name: "Temperança", colorPdf: [13, 148, 136], strengths: ["Perdão", "Humildade", "Prudência", "Autocontrole"] },
+        { name: "Transcendência", colorPdf: [217, 119, 6], strengths: ["Apreciação da Beleza", "Gratidão", "Esperança", "Humor", "Espiritualidade"] }
+      ];
+
+      const orderedStrengths = [];
+      virtuesList.forEach(v => {
+        v.strengths.forEach(sName => {
+          const rank = scores.findIndex(x => x.name === sName) + 1;
+          orderedStrengths.push({ name: sName, rank, color: v.colorPdf });
+        });
+      });
+
+      // CENTRALIZANDO O GRÁFICO (Radar isolated and centered on page)
+      const cx = pageW / 2;
+      const cy = (pageH / 2) + 12; 
+      const radius = 68;
+
+      for(let level=5; level>=1; level--) {
+        const r = radius * (level/5);
+        if(level % 2 === 0) doc.setFillColor(248, 250, 252);
+        else doc.setFillColor(241, 245, 249);
+        
+        doc.setDrawColor(203, 213, 225);
+        doc.setLineWidth(0.2);
+
+        const pts = [];
+        for(let i=0; i<24; i++) {
+          const angle = (Math.PI / 180) * (i * 15 - 90);
+          pts.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
+        }
+        
+        for(let i=0; i<24; i++) {
+          const next = (i+1)%24;
+          doc.triangle(cx, cy, pts[i].x, pts[i].y, pts[next].x, pts[next].y, "FD");
+        }
+      }
+
+      for(let i=0; i<24; i++) {
+        const angle = (Math.PI / 180) * (i * 15 - 90);
+        const p = { x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) };
+        doc.setDrawColor(203, 213, 225);
+        doc.setLineWidth(0.2);
+        doc.line(cx, cy, p.x, p.y);
+      }
+
+      orderedStrengths.forEach((item, i) => {
+        const angleDeg = i * 15 - 90;
+        const angle = (Math.PI / 180) * angleDeg;
+        const labelR = radius + 5;
+        const lx = cx + labelR * Math.cos(angle);
+        const ly = cy + labelR * Math.sin(angle);
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(5.5);
+        doc.setTextColor(...item.color);
+        
+        let align = "center";
+        let textX = lx;
+        let textY = ly + 1.5;
+        
+        if (angleDeg > -80 && angleDeg < 80) { align = "left"; textX += 1.0; }
+        if (angleDeg > 100 && angleDeg < 260) { align = "right"; textX -= 1.0; }
+        if (angleDeg === -90) { textY -= 1.5; }
+        if (angleDeg === 90) { textY += 3.0; }
+        
+        doc.text(item.name, textX, textY, { align: align });
+      });
+
+      const dataPts = [];
+      orderedStrengths.forEach((item, i) => {
+        const chartPct = 100 - ((item.rank - 1) * (85 / 23));
+        const r = radius * (chartPct / 100);
+        const angle = (Math.PI / 180) * (i * 15 - 90);
+        dataPts.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle), rank: item.rank, color: item.color });
+      });
+
+      doc.setDrawColor(17, 24, 39);
+      doc.setLineWidth(0.6);
+      
+      for(let i=0; i<24; i++) {
+        const next = (i+1)%24;
+        doc.line(dataPts[i].x, dataPts[i].y, dataPts[next].x, dataPts[next].y);
+      }
+      
+      dataPts.forEach((p) => {
+        doc.setFillColor(...p.color);
+        doc.circle(p.x, p.y, 2.5, "F"); 
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(4.8);
+        doc.setTextColor(255, 255, 255);
+        doc.text(String(p.rank), p.x, p.y + 1.6, { align: "center" });
+      });
+      
+      y = pageH; 
     }
 
     function drawCover() {
@@ -1964,25 +2134,6 @@
       y += 12;
     }
 
-    function addParagraph(text, fontSize = 10, lineH = 5) {
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(fontSize);
-      doc.setTextColor(51, 51, 51);
-      const lines = doc.splitTextToSize(String(text), contentW);
-      lines.forEach(line => {
-        if (y > pageH - 20) newPage();
-        doc.text(line, margin, y);
-        y += lineH;
-      });
-      y += 2;
-    }
-
-    function addRichParagraph(htmlText, fontSize = 10, lineH = 5) {
-      doc.setFontSize(fontSize);
-      doc.setTextColor(51, 51, 51);
-      drawRichParagraph(htmlText, fontSize, lineH, contentW);
-    }
-
     function addStrengthGroup(title, items, color, startRank = 1) {
       newPage();
       addSectionTitle(title);
@@ -2078,17 +2229,82 @@
     doc.text(sanitize(whatsapp), margin + 126, y);
     y += 10;
 
-    addSectionTitle("2. Introdução");
-    addRichParagraph("Este relatório apresenta uma leitura estruturada das <strong>forças de caráter</strong>, compreendidas como disposições positivas relativamente estáveis que influenciam a forma como uma pessoa percebe o mundo, responde aos desafios, constrói relações, exerce escolhas e expressa sua contribuição.");
-    addRichParagraph("Em vez de concentrar a atenção em limitações, esta pesquisa direciona o olhar para os recursos humanos mais presentes no perfil individual. Seu propósito é reconhecer aquilo que tende a emergir com maior <strong>naturalidade</strong>, <strong>consistência</strong>, <strong>potência</strong> e <strong>autenticidade</strong>, favorecendo <strong>realização</strong>, <strong>liderança</strong>, <strong>cooperação</strong>, <strong>equilíbrio</strong> e <strong>sentido</strong>.");
-    addRichParagraph("As forças mais elevadas do ranking costumam indicar dimensões que oferecem energia, clareza, mobilização interna e coerência na maneira como a pessoa atua. Em muitos casos, elas representam aquilo que sustenta sua forma mais espontânea de gerar <strong>valor</strong>, inspirar confiança, responder com maturidade e transformar intenção em presença concreta.");
-    addRichParagraph("As posições do ranking são apresentadas em ordem de predominância. Isso significa que o resultado não procura rotular a pessoa, mas oferecer um retrato interpretativo do padrão mais provável de funcionamento neste momento. Trata-se de uma leitura de <strong>potenciais</strong>, <strong>tendências</strong> e <strong>recursos</strong>, e não de uma definição fixa da identidade.");
-    addRichParagraph("As forças que aparecem nas posições finais também possuem importância estratégica. Muitas vezes, são justamente elas que sinalizam oportunidades valiosas de ampliação de repertório, desenvolvimento de equilíbrio interno, refinamento relacional e expansão da própria capacidade de resposta diante das demandas da vida.");
-    addRichParagraph(`Em sua leitura atual, <strong>${sortedScores[0].name}</strong> aparece como a força de maior destaque, compondo o eixo mais evidente do seu funcionamento. A partir dela, outras forças se organizam em sequência e formam o desenho mais característico do seu perfil, revelando uma estrutura interna rica em <strong>possibilidades</strong>, <strong>maturidade</strong> e <strong>potencial de impacto</strong>.`);
+    // INTRODUÇÃO TOTALMENTE REESCRITA COM TEXTO PREMIUM (+20 LINHAS)
+    addSectionTitle("2. Introdução e Fundamentos da Análise");
+    addRichParagraph("Este relatório apresenta uma leitura estruturada das <strong>forças de caráter</strong>, fundamentada na Psicologia Positiva e no rigor científico do VIA Institute. Elas são compreendidas como disposições positivas e estáveis que moldam sua percepção de mundo, suas decisões sob pressão, a forma como você constrói relações e como expressa sua liderança.");
+    addRichParagraph("Diferente das avaliações convencionais que focam estritamente em limitações e gaps de competência, este mapeamento inverte a lente analítica. Seu propósito é reconhecer seus padrões de excelência: aquilo que emerge com máxima <strong>naturalidade</strong>, <strong>consistência</strong> e <strong>autenticidade</strong> na sua rotina profissional e pessoal.");
+    addRichParagraph("A ciência moderna do desenvolvimento humano atesta que o crescimento exponencial de um profissional não ocorre pela mera correção de fraquezas, mas pela identificação e expansão intencional daquilo que ele já faz de melhor. Indivíduos que compreendem e ativam sua <strong>assinatura psicológica</strong> conseguem alinhar suas carreiras ao seu fluxo natural de energia, reduzindo drasticamente o atrito interno, combatendo o estresse e acessando níveis profundos de <strong>Flow</strong> cognitivo.");
+    addRichParagraph("Dados globais comprovam que pessoas que operam diariamente a partir de suas forças centrais apresentam resiliência superior diante de crises, possuem maior facilidade para orquestrar equipes de alta performance e demonstram inteligência adaptativa avançada. Suas forças de caráter não são apenas traços de personalidade; elas funcionam como um escudo fisiológico contra o esgotamento (burnout) e como o motor mais seguro para a inovação.");
+    addRichParagraph("O resultado que você tem em mãos revela o núcleo da sua <strong>identidade de ação</strong>. As forças que lideram seu ranking sustentam sua capacidade mais autêntica de gerar valor e inspirar confiança em ambientes complexos. Já as forças alocadas nas últimas posições revelam valiosas oportunidades para autogestão: elas apontam exatamente onde você não deve despender energia excessiva e onde a criação de alianças táticas será decisiva para blindar seus resultados.");
+    addRichParagraph("Liderar a partir do próprio design interno é a base imutável da autoridade genuína. Não há um perfil comportamental ideal a ser perseguido pelo mercado, mas sim a maestria sobre a sua própria natureza. Compreender e utilizar este relatório é o marco inicial para abandonar o esforço exaustivo de tentar ser excelente em tudo e passar a focar onde o seu impacto é verdadeiramente insubstituível.");
+    addRichParagraph(`Nesta leitura, a força <strong>${sortedScores[0].name}</strong> desponta como o pilar master do seu perfil. A partir dela, todas as demais forças se orquestram em um arranjo único, compondo um retrato profundo, maduro e altamente estratégico do seu modo de atuar e vencer.`);
 
-    addStrengthGroup("3. Suas 5 Forças Principais", sortedScores.slice(0, 5), [13, 148, 136], 1);
-    addStrengthGroup("4. Forças de Sustentação", sortedScores.slice(5, 19), [234, 88, 12], 6);
-    addStrengthGroup("5. Forças Menos Evidentes no Momento", sortedScores.slice(19, 24), [220, 38, 38], 20);
+    // MAPA ISOLADO E CENTRALIZADO
+    drawForceMapPdf(sortedScores);
+
+    // NOVA SEÇÃO: A CIÊNCIA DO CARÁTER (CAIXAS COLORIDAS NO PDF)
+    newPage();
+    addSectionTitle("4. A Ciência do Caráter e Estratégia de Perfil");
+    
+    addRichParagraph("O modelo das 24 Forças de Caráter é fundamentado em rigorosas pesquisas do <strong>VIA Institute on Character</strong>. A ciência contemporânea comprova que o autoconhecimento e a aplicação consciente de nossas forças centrais estão diretamente ligados a níveis significativamente mais altos de engajamento, resiliência, produtividade e bem-estar.");
+    y += 2;
+    addRichParagraph("A verdadeira inteligência comportamental não reside em tentar ser impecável em todas as 24 forças (o que levaria ao esgotamento rápido), mas sim em ter <strong>total clareza sobre sua assinatura psicológica</strong> e utilizá-la estrategicamente como alavanca de negócios, relacionamentos e qualidade de vida.");
+    
+    y += 6;
+
+    // BOX 1: TOP 5 (Teal)
+    let boxY = y;
+    doc.setFillColor(240, 253, 250); 
+    doc.setDrawColor(13, 148, 136);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin, boxY, contentW, 46, 3, 3, "FD");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(13, 148, 136);
+    doc.text("AWARE & EXPLORE: Potencializando o Top 5", margin + 6, boxY + 8);
+    
+    y = boxY + 14;
+    addRichParagraph("Suas 5 forças principais configuram seu núcleo de excelência. Segundo pesquisadores como Dr. Ryan Niemiec, quando você opera ancorado no seu Top 5, acessa facilmente o estado de <strong>Flow</strong> cognitivo. <strong>Estratégia:</strong> Modele sua rotina, delegue tarefas secundárias e posicione-se em projetos onde essas virtudes sejam o motor principal. Profissionais que usam suas forças de assinatura diariamente têm <strong>3x mais chances de relatar excelente qualidade de vida</strong> e são <strong>6x mais engajados</strong> no trabalho.", 9.5, 4.8, contentW - 12, margin + 6);
+    
+    y = boxY + 52;
+
+    // BOX 2: Middle Strengths (Orange)
+    boxY = y;
+    doc.setFillColor(255, 247, 237); 
+    doc.setDrawColor(234, 88, 12);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin, boxY, contentW, 40, 3, 3, "FD");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(234, 88, 12);
+    doc.text("APPLY & NAVIGATE: Forças de Sustentação (Posições 6 a 19)", margin + 6, boxY + 8);
+
+    y = boxY + 14;
+    addRichParagraph("Estas são as suas forças fásicas, que emergem de acordo com a exigência do contexto. <strong>Estratégia:</strong> Trate-as como seu <strong>canivete suíço psicológico</strong>. Elas fornecem a versatilidade necessária para que você se adapte a mudanças de cenário, apoie sua equipe em transições e mantenha a consistência de liderança e técnica quando apenas o seu Top 5 não for suficiente para contornar o problema.", 9.5, 4.8, contentW - 12, margin + 6);
+
+    y = boxY + 46;
+
+    // BOX 3: Bottom 5 (Red)
+    boxY = y;
+    doc.setFillColor(254, 242, 242); 
+    doc.setDrawColor(220, 38, 38);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin, boxY, contentW, 46, 3, 3, "FD");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(220, 38, 38);
+    doc.text("PROTECT & PARTNER: Gerenciando Forças Menores (Posições 20 a 24)", margin + 6, boxY + 8);
+
+    y = boxY + 14;
+    addRichParagraph("As forças na base não são \"fraquezas\". O VIA Institute as define como perspectivas que demandam altíssima energia consciente para serem ativadas por você. Forçá-las diariamente gera fadiga severa. <strong>Estratégia Premium:</strong> 1) <strong>Compensação:</strong> Utilize uma força do seu Top 5 para contornar a demanda externa (ex: usar criatividade para suprir a falta de perseverança). 2) <strong>Alianças Estratégicas:</strong> Cerque-se de profissionais que possuam essas forças naturalmente elevadas.", 9.5, 4.8, contentW - 12, margin + 6);
+
+    // Renderizando os Grupos
+    addStrengthGroup("5. Suas 5 Forças Principais", sortedScores.slice(0, 5), [13, 148, 136], 1);
+    addStrengthGroup("6. Forças de Sustentação", sortedScores.slice(5, 19), [234, 88, 12], 6);
+    addStrengthGroup("7. Forças Menos Evidentes no Momento", sortedScores.slice(19, 24), [220, 38, 38], 20);
 
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 2; i <= totalPages; i++) {
