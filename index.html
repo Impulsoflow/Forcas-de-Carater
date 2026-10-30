@@ -1814,6 +1814,7 @@
       };
 
       const serverResult = await postResultToScript(payload);
+      if(window.ImpulsoAccountBridge?.active)void window.ImpulsoAccountBridge.reportSaved?.(false); // no-cors: recebimento não verificável
       console.log("Resultado confirmado pelo Apps Script:", serverResult);
 
       autoSendDone = true;
