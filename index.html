@@ -1766,6 +1766,7 @@
 
     if (autoSendInProgress || autoSendDone) return;
     autoSendInProgress = true;
+    let centralSynced=false;
 
     try {
       const { doc, pdfFileName } = await generatePdfDocAndFileName(sorted);
@@ -1823,21 +1824,42 @@
         sendEmail: true
       };
 
+      // Contrato universal: validar o PDF original e o resumo no acervo autenticado.
+      // O transporte Google/e-mail é independente e não prova arquivamento no IMPULSO.
+      if(window.ImpulsoAccountBridge?.active){
+        const central=await window.ImpulsoAccountBridge.publishReport({
+          pdfBase64:base64Pdf,
+          summary:{headline:'Mapa de forças de caráter',
+            bars:sorted.slice(0,5).map(item=>({
+              label:String(item.name||'').slice(0,44),
+              value:Number(item.percent),maximum:100
+            }))}
+        });
+        if(!central.pdfAvailable||!central.summarySaved)throw Error('A Central ainda não confirmou o PDF e o resumo. Preserve a cópia.');
+        centralSynced=true;
+      }
       const serverResult = await postResultToScript(payload);
-      if(window.ImpulsoAccountBridge?.active)void window.ImpulsoAccountBridge.reportSaved?.(false); // no-cors: recebimento não verificável
       console.log("Resultado confirmado pelo Apps Script:", serverResult);
 
       autoSendDone = true;
-      document.getElementById("auto-send-status").textContent = "";
+      document.getElementById("auto-send-status").textContent = window.ImpulsoAccountBridge?.active
+        ? "✅ PDF original e resumo confirmados na sua conta IMPULSO. O e-mail é processado separadamente."
+        : "Solicitação de envio ao servidor externo realizada.";
       document.getElementById("final-success-message").style.display = "block";
     } catch (e) {
       console.error(e);
+      if(centralSynced){
+        autoSendDone=true;
+        document.getElementById("auto-send-status").textContent =
+          "✅ PDF e mini-resumo disponíveis no IMPULSO. O envio de e-mail ainda não foi confirmado.";
+      }else{
       emailSendAttempts++;
       if (emailSendAttempts < MAX_EMAIL_ATTEMPTS) {
         document.getElementById("auto-send-status").textContent = `⚠️ Tentativa ${emailSendAttempts}/${MAX_EMAIL_ATTEMPTS} - Falha na conexão, reconectando...`;
         setTimeout(() => processResults(), 2500);
       } else {
-        document.getElementById("auto-send-status").textContent = "❌ Falha no processamento. Tire um print e envie para impulsoflow@gmail.com";
+        document.getElementById("auto-send-status").textContent = "⚠️ PDF ainda não confirmado no IMPULSO. Preserve o resultado; não refaça a pesquisa.";
+      }
       }
     } finally {
       autoSendInProgress = false;
