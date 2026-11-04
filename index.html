@@ -811,6 +811,10 @@
           </div>
         </div>
 
+        <label for="consent" style="display:flex;gap:12px;align-items:flex-start;margin:26px auto 0;max-width:680px;color:#23415d;font-size:14px;line-height:1.5;cursor:pointer;">
+          <input type="checkbox" id="consent" onchange="validateForm()" required style="width:20px;height:20px;flex:0 0 20px;margin-top:2px;">
+          <span>Autorizo o tratamento das minhas respostas e dados informados para gerar e guardar privadamente meu relatório na conta IMPULSO. Esta pesquisa é destinada ao autoconhecimento educacional e não equivale a diagnóstico psicológico ou clínico.</span>
+        </label>
         <div class="nav" style="justify-content:center; margin-top:32px;">
           <button id="start-btn" onclick="startTest()" class="btn btn-primary" type="button" style="width:100%; max-width:320px; justify-content:center; padding:14px; font-size:16px;" disabled>
             Iniciar Pesquisa
@@ -849,10 +853,11 @@
             ✅ Relatório Gerado!
           </p>
           <p style="margin:6px 0 0; font-size:14px; color:#047857;">
-            Seu resultado completo em PDF foi enviado para seu e-mail.<br>
-            Equipe Instituto Impulso notificada.
+            PDF original e resumo confirmados na conta IMPULSO.<br>
+            O envio por e-mail, quando aplicável, é processado separadamente.
           </p>
         </div>
+        <button id="retry-impulso-sync" type="button" style="display:none;margin:16px auto 0;border:0;border-radius:12px;padding:13px 22px;background:#1e5db7;color:white;font-weight:700;cursor:pointer;" onclick="retryOnlyImpulsoSync()">Repetir somente a sincronização do relatório</button>
       </div>
 
       <div class="result-grid">
@@ -964,6 +969,11 @@
   let latestSortedScores = [];
   let currentSubmissionId = "";
   let currentRespondedAt = "";
+  let currentConsentAt = "";
+  // Guardar somente na memória da aba o PDF e o mini-resumo até confirmar ambos.
+  let pendingAccountArtifact = null;
+  let pendingGooglePayload = null;
+  let googleSendAttempted = false;
 
   function sanitize(str) {
     return window.DOMPurify ? DOMPurify.sanitize(String(str || "")) : String(str || "");
@@ -1045,9 +1055,10 @@
     const whatsappValid = validateWhatsAppField();
     const ageValid = validateAgeField();
 
+    const consentValid = document.getElementById("consent")?.checked === true;
     const startBtn = document.getElementById("start-btn");
     if (startBtn) {
-      startBtn.disabled = !(nameValid && emailValid && whatsappValid && ageValid);
+      startBtn.disabled = !(nameValid && emailValid && whatsappValid && ageValid && consentValid);
     }
   }
 
@@ -1389,7 +1400,9 @@
     const isWhatsAppValid = validateWhatsAppField();
     const isAgeValid = validateAgeField();
 
-    if (!isNameValid || !isEmailValid || !isWhatsAppValid || !isAgeValid) return;
+    if (!isNameValid || !isEmailValid || !isWhatsAppValid || !isAgeValid ||
+        document.getElementById("consent")?.checked !== true) return;
+    currentConsentAt = new Date().toISOString();
 
     if (!window.ImpulsoResearchAccess) {
       alert("O controle de acesso não carregou. Recarregue a página e tente novamente.");
@@ -1411,6 +1424,9 @@
         autoSendDone = false;
         autoSendInProgress = false;
         emailSendAttempts = 0;
+        pendingAccountArtifact = null;
+        pendingGooglePayload = null;
+        googleSendAttempted = false;
         showStep("step-quiz");
         renderQuestion();
         updateProgressUI();
@@ -1798,7 +1814,7 @@
         apiKey: API_KEY,
         submissionId: currentSubmissionId,
         respondidoEm: currentRespondedAt,
-        consentimentoEm: "",
+        consentimentoEm: currentConsentAt,
         instrumento: "Forças de Caráter",
         testId: "via_forcas",
         nome: document.getElementById("name").value.trim(),
@@ -1824,46 +1840,97 @@
         sendEmail: true
       };
 
-      // Contrato universal: validar o PDF original e o resumo no acervo autenticado.
-      // O transporte Google/e-mail é independente e não prova arquivamento no IMPULSO.
+      // Retém o arquivo original somente na memória desta aba para recuperação
+      // idempotente: jamais pede ao participante que responda 120 itens de novo.
+      pendingAccountArtifact={pdfBase64:base64Pdf,summary:{
+        headline:'Mapa de forças de caráter',
+        bars:sorted.slice(0,5).map(item=>({
+          label:String(item.name||'').slice(0,44),
+          value:Number(item.percent),maximum:100
+        }))
+      }};
+      pendingGooglePayload=payload;
+      // Um lançamento vindo da conta não pode fingir sucesso sem a ponte privada.
+      const launchedFromPortal=location.hash.includes('impulso_lancamento=')||
+        new URLSearchParams(location.search).has('impulso_lancamento');
+      if(launchedFromPortal&&!window.ImpulsoAccountBridge?.active)
+        throw Error('A conexão autenticada da conta IMPULSO não está disponível.');
       if(window.ImpulsoAccountBridge?.active){
-        const central=await window.ImpulsoAccountBridge.publishReport({
-          pdfBase64:base64Pdf,
-          summary:{headline:'Mapa de forças de caráter',
-            bars:sorted.slice(0,5).map(item=>({
-              label:String(item.name||'').slice(0,44),
-              value:Number(item.percent),maximum:100
-            }))}
-        });
-        if(!central.pdfAvailable||!central.summarySaved)throw Error('A Central ainda não confirmou o PDF e o resumo. Preserve a cópia.');
+        const central=await window.ImpulsoAccountBridge.publishReport(pendingAccountArtifact);
+        if(!central?.pdfAvailable||!central.summarySaved)
+          throw Error('A Central ainda não confirmou o PDF e o resumo. Preserve a cópia.');
         centralSynced=true;
       }
+      googleSendAttempted=true; // no-cors não fornece recibo; nunca repetir o envio ambiguamente
       const serverResult = await postResultToScript(payload);
       console.log("Resultado confirmado pelo Apps Script:", serverResult);
 
       autoSendDone = true;
       document.getElementById("auto-send-status").textContent = window.ImpulsoAccountBridge?.active
         ? "✅ PDF original e resumo confirmados na sua conta IMPULSO. O e-mail é processado separadamente."
-        : "Solicitação de envio ao servidor externo realizada.";
-      document.getElementById("final-success-message").style.display = "block";
+        : "Envio solicitado ao serviço externo; a confirmação de armazenamento na conta IMPULSO não está disponível.";
+      document.getElementById("final-success-message").style.display =
+        window.ImpulsoAccountBridge?.active ? "block" : "none";
     } catch (e) {
       console.error(e);
       if(centralSynced){
         autoSendDone=true;
+        document.getElementById("final-success-message").style.display = "block";
         document.getElementById("auto-send-status").textContent =
-          "✅ PDF e mini-resumo disponíveis no IMPULSO. O envio de e-mail ainda não foi confirmado.";
+          "✅ PDF e mini-resumo confirmados na conta IMPULSO; e-mail não confirmado.";
+      }else if(pendingAccountArtifact){
+        emailSendAttempts++;
+        if(emailSendAttempts<MAX_EMAIL_ATTEMPTS){
+          document.getElementById("auto-send-status").textContent =
+            `⚠️ Sincronização pendente (${emailSendAttempts}/${MAX_EMAIL_ATTEMPTS}). Tentando novamente sem refazer a pesquisa...`;
+          setTimeout(()=>{void retryOnlyImpulsoSync();},2500);
+        }else{
+          document.getElementById("auto-send-status").textContent =
+            "⚠️ PDF gerado, mas o IMPULSO ainda não confirmou o armazenamento. Não refaça a pesquisa.";
+          document.getElementById("retry-impulso-sync").style.display="inline-block";
+        }
       }else{
-      emailSendAttempts++;
-      if (emailSendAttempts < MAX_EMAIL_ATTEMPTS) {
-        document.getElementById("auto-send-status").textContent = `⚠️ Tentativa ${emailSendAttempts}/${MAX_EMAIL_ATTEMPTS} - Falha na conexão, reconectando...`;
-        setTimeout(() => processResults(), 2500);
-      } else {
-        document.getElementById("auto-send-status").textContent = "⚠️ PDF ainda não confirmado no IMPULSO. Preserve o resultado; não refaça a pesquisa.";
-      }
+        document.getElementById("auto-send-status").textContent =
+          "⚠️ O PDF ainda não foi gerado. Suas respostas permanecem nesta aba; não refaça a pesquisa.";
       }
     } finally {
       autoSendInProgress = false;
     }
+  }
+
+  // Se o transporte falhar, reutilizar os bytes JÁ GERADOS e o mesmo grant.
+  // Nenhuma nova resposta, PDF recriado, e-mail duplicado ou pagamento.
+  async function retryOnlyImpulsoSync(){
+    const button=document.getElementById("retry-impulso-sync");
+    const status=document.getElementById("auto-send-status");
+    if(button.disabled)return;
+    button.disabled=true;
+    try{
+      if(!pendingAccountArtifact||!window.ImpulsoAccountBridge?.active)
+        throw Error("A conta autenticada não está conectada nesta aba.");
+      const saved=await window.ImpulsoAccountBridge.publishReport(pendingAccountArtifact);
+      if(!saved?.summarySaved||!saved.pdfAvailable)
+        throw Error("PDF e resumo ainda não confirmados.");
+      autoSendDone=true;
+      button.style.display="none";
+      document.getElementById("final-success-message").style.display="block";
+      status.textContent="✅ PDF original e resumo confirmados na conta IMPULSO.";
+      if(!googleSendAttempted&&pendingGooglePayload){
+        googleSendAttempted=true;
+        try{await postResultToScript(pendingGooglePayload);}
+        catch{status.textContent="✅ PDF e resumo confirmados na conta IMPULSO; e-mail externo pendente.";}
+      }
+    }catch(error){
+      console.error("Sincronização privada pendente",error instanceof Error?error.name:"error");
+      emailSendAttempts++;
+      if(emailSendAttempts<MAX_EMAIL_ATTEMPTS){
+        status.textContent="⚠️ Conta IMPULSO ainda não confirmou o PDF e o resumo. Tentando novamente...";
+        setTimeout(()=>{void retryOnlyImpulsoSync();},2500);
+      }else{
+        status.textContent="⚠️ PDF não confirmado no acervo. Preserve esta aba; não refaça a pesquisa.";
+        button.style.display="inline-block";
+      }
+    }finally{button.disabled=false;}
   }
 
   async function generatePdfDocAndFileName(sortedScores) {
